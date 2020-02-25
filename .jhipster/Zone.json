@@ -1,0 +1,47 @@
+{
+    "name": "Zone",
+    "fields": [
+        {
+            "fieldName": "zoneID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "discription",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tenantId",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "branch",
+            "otherEntityRelationshipName": "zone",
+            "relationshipName": "branch",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipName": "inventory",
+            "otherEntityName": "inventory",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200225134416",
+    "entityTableName": "zone",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "barLevelService"
+    ]
+}

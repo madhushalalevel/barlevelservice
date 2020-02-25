@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="productVariousPositions">
+            <h2><span jhiTranslate="barLevelServiceApp.productVariousPositions.detail.title">Product Various Positions</span> {{productVariousPositions.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="barLevelServiceApp.productVariousPositions.xAxis">X Axis</span></dt>
+                <dd>
+                    <span>{{productVariousPositions.xAxis}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.productVariousPositions.yAxis">Y Axis</span></dt>
+                <dd>
+                    <span>{{productVariousPositions.yAxis}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.productVariousPositions.order">Order</span></dt>
+                <dd>
+                    <span>{{productVariousPositions.order}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.productVariousPositions.product">Product</span></dt>
+                <dd>
+                    <div *ngIf="productVariousPositions.productId">
+                        <a [routerLink]="['/product', productVariousPositions.productId, 'view']">{{productVariousPositions.productName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/product-various-positions', productVariousPositions.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

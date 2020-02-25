@@ -1,0 +1,83 @@
+{
+    "name": "Product",
+    "fields": [
+        {
+            "fieldName": "productID",
+            "javadoc": "fieldName",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "barCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "volume",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "subType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "containerType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "barCodeType",
+            "fieldType": "BarCodeType",
+            "fieldValues": "PUC,EAN"
+        },
+        {
+            "fieldName": "tenantId",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "productPositions",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "productPositions"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "productImage",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "productImage",
+            "ownerSide": false
+        },
+        {
+            "relationshipName": "inventory",
+            "otherEntityName": "inventory",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200225134413",
+    "entityTableName": "product",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "barLevelService"
+    ]
+}

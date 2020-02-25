@@ -1,0 +1,37 @@
+{
+    "name": "ProductVariousPositions",
+    "fields": [
+        {
+            "fieldName": "xAxis",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "yAxis",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "productVariousPositions",
+            "relationshipName": "product",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20200225134422",
+    "entityTableName": "product_various_positions",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "barLevelService"
+    ]
+}

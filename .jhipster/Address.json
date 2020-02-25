@@ -1,0 +1,56 @@
+{
+    "name": "Address",
+    "fields": [
+        {
+            "fieldName": "streetAddress1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "streetAddress2",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "city",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "country",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "zipCode",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "branch",
+            "otherEntityRelationshipName": "address",
+            "relationshipName": "branch",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "employee",
+            "otherEntityRelationshipName": "address",
+            "relationshipName": "employee",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20200225134425",
+    "entityTableName": "address",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "barLevelService"
+    ]
+}

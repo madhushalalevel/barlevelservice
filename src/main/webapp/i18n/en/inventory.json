@@ -1,0 +1,31 @@
+{
+  "barLevelServiceApp": {
+    "inventory": {
+      "home": {
+        "title": "Inventories",
+        "createLabel": "Create a new Inventory",
+        "createOrEditLabel": "Create or edit a Inventory"
+      },
+      "created": "A new Inventory is created with identifier {{ param }}",
+      "updated": "A Inventory is updated with identifier {{ param }}",
+      "deleted": "A Inventory is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Inventory {{ id }}?"
+      },
+      "detail": {
+        "title": "Inventory"
+      },
+      "productID": "Product ID",
+      "tennentID": "Tennent ID",
+      "branchID": "Branch ID",
+      "zoneID": "Zone ID",
+      "shelfID": "Shelf ID",
+      "currentStockCount": "Current Stock Count",
+      "employee": "Employee",
+      "employee": "Employee",
+      "employee": "Employee",
+      "employee": "Employee",
+      "employee": "Employee"
+    }
+  }
+}

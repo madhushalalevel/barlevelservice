@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-address-heading" jhiTranslate="barLevelServiceApp.address.home.createOrEditLabel">Create or edit a Address</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!address.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.address.streetAddress1" for="field_streetAddress1">Street Address 1</label>
+                    <input type="text" class="form-control" name="streetAddress1" id="field_streetAddress1"
+                           formControlName="streetAddress1"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.address.streetAddress2" for="field_streetAddress2">Street Address 2</label>
+                    <input type="text" class="form-control" name="streetAddress2" id="field_streetAddress2"
+                           formControlName="streetAddress2"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.address.city" for="field_city">City</label>
+                    <input type="text" class="form-control" name="city" id="field_city"
+                           formControlName="city"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.address.state" for="field_state">State</label>
+                    <input type="text" class="form-control" name="state" id="field_state"
+                           formControlName="state"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.address.country" for="field_country">Country</label>
+                    <input type="text" class="form-control" name="country" id="field_country"
+                           formControlName="country"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.address.zipCode" for="field_zipCode">Zip Code</label>
+                    <input type="text" class="form-control" name="zipCode" id="field_zipCode"
+                           formControlName="zipCode"/>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

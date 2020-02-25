@@ -1,0 +1,45 @@
+{
+    "name": "Usage",
+    "fields": [
+        {
+            "fieldName": "usageId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "productID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "branchID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "zoneID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "shelfID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "usage",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "datetime",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200225134421",
+    "entityTableName": "usage",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "barLevelService"
+    ]
+}

@@ -1,0 +1,9 @@
+{
+  "barLevelServiceApp": {
+    "BarCodeType": {
+      "null": "",
+      "PUC": "PUC",
+      "EAN": "EAN"
+    }
+  }
+}
