@@ -4,7 +4,8 @@
       "home": {
         "title": "Usages",
         "createLabel": "Create a new Usage",
-        "createOrEditLabel": "Create or edit a Usage"
+        "createOrEditLabel": "Create or edit a Usage",
+        "notFound": "No Usages found"
       },
       "created": "A new Usage is created with identifier {{ param }}",
       "updated": "A Usage is updated with identifier {{ param }}",

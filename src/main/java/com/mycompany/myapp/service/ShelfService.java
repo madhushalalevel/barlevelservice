@@ -58,7 +58,6 @@ public class ShelfService {
             .map(shelfMapper::toDto);
     }
 
-
     /**
      * Get one shelf by id.
      *

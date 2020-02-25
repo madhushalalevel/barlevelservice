@@ -1,36 +1,39 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="shelf">
-            <h2><span jhiTranslate="barLevelServiceApp.shelf.detail.title">Shelf</span> {{shelf.id}}</h2>
+            <h2><span jhiTranslate="barLevelServiceApp.shelf.detail.title">Shelf</span> {{ shelf.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="barLevelServiceApp.shelf.shelfID">Shelf ID</span></dt>
                 <dd>
-                    <span>{{shelf.shelfID}}</span>
+                    <span>{{ shelf.shelfID }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.shelf.name">Name</span></dt>
                 <dd>
-                    <span>{{shelf.name}}</span>
+                    <span>{{ shelf.name }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.shelf.discription">Discription</span></dt>
                 <dd>
-                    <span>{{shelf.discription}}</span>
+                    <span>{{ shelf.discription }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.shelf.tenantId">Tenant Id</span></dt>
                 <dd>
-                    <span>{{shelf.tenantId}}</span>
+                    <span>{{ shelf.tenantId }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.shelf.zone">Zone</span></dt>
                 <dd>
                     <div *ngIf="shelf.zoneId">
-                        <a [routerLink]="['/zone', shelf.zoneId, 'view']">{{shelf.zoneName}}</a>
+                        <a [routerLink]="['/zone', shelf.zoneId, 'view']">{{ shelf.zoneName }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.shelf.inventory">Inventory</span></dt>
                 <dd>
                     <div *ngIf="shelf.inventoryId">
-                        <a [routerLink]="['/inventory', shelf.inventoryId, 'view']">{{shelf.inventoryId}}</a>
+                        <a [routerLink]="['/inventory', shelf.inventoryId, 'view']">{{ shelf.inventoryId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -38,13 +41,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/shelf', shelf.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link ProductImageResource} REST controller.
+ * Integration tests for the {@link ProductImageResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class ProductImageResourceIT {
@@ -125,7 +125,7 @@ public class ProductImageResourceIT {
         // Create the ProductImage
         ProductImageDTO productImageDTO = productImageMapper.toDto(productImage);
         restProductImageMockMvc.perform(post("/api/product-images")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productImageDTO)))
             .andExpect(status().isCreated());
 
@@ -149,7 +149,7 @@ public class ProductImageResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductImageMockMvc.perform(post("/api/product-images")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productImageDTO)))
             .andExpect(status().isBadRequest());
 
@@ -168,9 +168,9 @@ public class ProductImageResourceIT {
         // Get all the productImageList
         restProductImageMockMvc.perform(get("/api/product-images?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productImage.getId().intValue())))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL.toString())))
+            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
     }
@@ -184,9 +184,9 @@ public class ProductImageResourceIT {
         // Get the productImage
         restProductImageMockMvc.perform(get("/api/product-images/{id}", productImage.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productImage.getId().intValue()))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL.toString()))
+            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)));
     }
@@ -218,7 +218,7 @@ public class ProductImageResourceIT {
         ProductImageDTO productImageDTO = productImageMapper.toDto(updatedProductImage);
 
         restProductImageMockMvc.perform(put("/api/product-images")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productImageDTO)))
             .andExpect(status().isOk());
 
@@ -241,7 +241,7 @@ public class ProductImageResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductImageMockMvc.perform(put("/api/product-images")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productImageDTO)))
             .andExpect(status().isBadRequest());
 
@@ -260,49 +260,11 @@ public class ProductImageResourceIT {
 
         // Delete the productImage
         restProductImageMockMvc.perform(delete("/api/product-images/{id}", productImage.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<ProductImage> productImageList = productImageRepository.findAll();
         assertThat(productImageList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ProductImage.class);
-        ProductImage productImage1 = new ProductImage();
-        productImage1.setId(1L);
-        ProductImage productImage2 = new ProductImage();
-        productImage2.setId(productImage1.getId());
-        assertThat(productImage1).isEqualTo(productImage2);
-        productImage2.setId(2L);
-        assertThat(productImage1).isNotEqualTo(productImage2);
-        productImage1.setId(null);
-        assertThat(productImage1).isNotEqualTo(productImage2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ProductImageDTO.class);
-        ProductImageDTO productImageDTO1 = new ProductImageDTO();
-        productImageDTO1.setId(1L);
-        ProductImageDTO productImageDTO2 = new ProductImageDTO();
-        assertThat(productImageDTO1).isNotEqualTo(productImageDTO2);
-        productImageDTO2.setId(productImageDTO1.getId());
-        assertThat(productImageDTO1).isEqualTo(productImageDTO2);
-        productImageDTO2.setId(2L);
-        assertThat(productImageDTO1).isNotEqualTo(productImageDTO2);
-        productImageDTO1.setId(null);
-        assertThat(productImageDTO1).isNotEqualTo(productImageDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(productImageMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(productImageMapper.fromId(null)).isNull();
     }
 }

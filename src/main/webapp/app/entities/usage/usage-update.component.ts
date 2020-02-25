@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+
 import { IUsage, Usage } from 'app/shared/model/usage.model';
 import { UsageService } from './usage.service';
 
@@ -11,8 +13,7 @@ import { UsageService } from './usage.service';
   templateUrl: './usage-update.component.html'
 })
 export class UsageUpdateComponent implements OnInit {
-  usage: IUsage;
-  isSaving: boolean;
+  isSaving = false;
 
   editForm = this.fb.group({
     id: [],
@@ -27,15 +28,13 @@ export class UsageUpdateComponent implements OnInit {
 
   constructor(protected usageService: UsageService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ usage }) => {
       this.updateForm(usage);
-      this.usage = usage;
     });
   }
 
-  updateForm(usage: IUsage) {
+  updateForm(usage: IUsage): void {
     this.editForm.patchValue({
       id: usage.id,
       usageId: usage.usageId,
@@ -48,11 +47,11 @@ export class UsageUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const usage = this.createFromForm();
     if (usage.id !== undefined) {
@@ -63,30 +62,32 @@ export class UsageUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IUsage {
-    const entity = {
+    return {
       ...new Usage(),
-      id: this.editForm.get(['id']).value,
-      usageId: this.editForm.get(['usageId']).value,
-      productID: this.editForm.get(['productID']).value,
-      branchID: this.editForm.get(['branchID']).value,
-      zoneID: this.editForm.get(['zoneID']).value,
-      shelfID: this.editForm.get(['shelfID']).value,
-      usage: this.editForm.get(['usage']).value,
-      datetime: this.editForm.get(['datetime']).value
+      id: this.editForm.get(['id'])!.value,
+      usageId: this.editForm.get(['usageId'])!.value,
+      productID: this.editForm.get(['productID'])!.value,
+      branchID: this.editForm.get(['branchID'])!.value,
+      zoneID: this.editForm.get(['zoneID'])!.value,
+      shelfID: this.editForm.get(['shelfID'])!.value,
+      usage: this.editForm.get(['usage'])!.value,
+      datetime: this.editForm.get(['datetime'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IUsage>>) {
-    result.subscribe((res: HttpResponse<IUsage>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IUsage>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
 }

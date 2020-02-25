@@ -2,65 +2,77 @@
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-product-heading" jhiTranslate="barLevelServiceApp.product.home.createOrEditLabel">Create or edit a Product</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!product.id">
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.productID" for="field_productID" [ngbTooltip]="'barLevelServiceApp.product.help.productID' | translate">Product ID</label>
                     <input type="number" class="form-control" name="productID" id="field_productID"
                            formControlName="productID"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.barCode" for="field_barCode">Bar Code</label>
                     <input type="text" class="form-control" name="barCode" id="field_barCode"
                            formControlName="barCode"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.quantity" for="field_quantity">Quantity</label>
                     <input type="number" class="form-control" name="quantity" id="field_quantity"
                            formControlName="quantity"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.volume" for="field_volume">Volume</label>
                     <input type="number" class="form-control" name="volume" id="field_volume"
                            formControlName="volume"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.type" for="field_type">Type</label>
                     <input type="text" class="form-control" name="type" id="field_type"
                            formControlName="type"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.subType" for="field_subType">Sub Type</label>
                     <input type="text" class="form-control" name="subType" id="field_subType"
                            formControlName="subType"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.price" for="field_price">Price</label>
                     <input type="number" class="form-control" name="price" id="field_price"
                            formControlName="price"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.containerType" for="field_containerType">Container Type</label>
                     <input type="text" class="form-control" name="containerType" id="field_containerType"
                            formControlName="containerType"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.barCodeType" for="field_barCodeType">Bar Code Type</label>
                     <select class="form-control" name="barCodeType" formControlName="barCodeType" id="field_barCodeType">
-                        <option value="PUC">{{'barLevelServiceApp.BarCodeType.PUC' | translate}}</option>
-                        <option value="EAN">{{'barLevelServiceApp.BarCodeType.EAN' | translate}}</option>
+                        <option value="PUC">{{ 'barLevelServiceApp.BarCodeType.PUC' | translate }}</option>
+                        <option value="EAN">{{ 'barLevelServiceApp.BarCodeType.EAN' | translate }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.tenantId" for="field_tenantId">Tenant Id</label>
                     <input type="text" class="form-control" name="tenantId" id="field_tenantId"
@@ -71,16 +83,18 @@
                     <label class="form-control-label" jhiTranslate="barLevelServiceApp.product.inventory" for="field_inventory">Inventory</label>
                     <select class="form-control" id="field_inventory" name="inventory" formControlName="inventoryId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="inventoryOption.id" *ngFor="let inventoryOption of inventories; trackBy: trackInventoryById">{{inventoryOption.id}}</option>
+                        <option [ngValue]="inventoryOption.id" *ngFor="let inventoryOption of inventories; trackBy: trackById">{{ inventoryOption.id }}</option>
                     </select>
                 </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

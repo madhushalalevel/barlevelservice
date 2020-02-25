@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link ProductPositionsResource} REST controller.
+ * Integration tests for the {@link ProductPositionsResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class ProductPositionsResourceIT {
@@ -125,7 +125,7 @@ public class ProductPositionsResourceIT {
         // Create the ProductPositions
         ProductPositionsDTO productPositionsDTO = productPositionsMapper.toDto(productPositions);
         restProductPositionsMockMvc.perform(post("/api/product-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productPositionsDTO)))
             .andExpect(status().isCreated());
 
@@ -148,7 +148,7 @@ public class ProductPositionsResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductPositionsMockMvc.perform(post("/api/product-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productPositionsDTO)))
             .andExpect(status().isBadRequest());
 
@@ -167,7 +167,7 @@ public class ProductPositionsResourceIT {
         // Get all the productPositionsList
         restProductPositionsMockMvc.perform(get("/api/product-positions?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productPositions.getId().intValue())))
             .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION)))
             .andExpect(jsonPath("$.[*].updatedTime").value(hasItem(sameInstant(DEFAULT_UPDATED_TIME))));
@@ -182,7 +182,7 @@ public class ProductPositionsResourceIT {
         // Get the productPositions
         restProductPositionsMockMvc.perform(get("/api/product-positions/{id}", productPositions.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productPositions.getId().intValue()))
             .andExpect(jsonPath("$.position").value(DEFAULT_POSITION))
             .andExpect(jsonPath("$.updatedTime").value(sameInstant(DEFAULT_UPDATED_TIME)));
@@ -214,7 +214,7 @@ public class ProductPositionsResourceIT {
         ProductPositionsDTO productPositionsDTO = productPositionsMapper.toDto(updatedProductPositions);
 
         restProductPositionsMockMvc.perform(put("/api/product-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productPositionsDTO)))
             .andExpect(status().isOk());
 
@@ -236,7 +236,7 @@ public class ProductPositionsResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductPositionsMockMvc.perform(put("/api/product-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productPositionsDTO)))
             .andExpect(status().isBadRequest());
 
@@ -255,49 +255,11 @@ public class ProductPositionsResourceIT {
 
         // Delete the productPositions
         restProductPositionsMockMvc.perform(delete("/api/product-positions/{id}", productPositions.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<ProductPositions> productPositionsList = productPositionsRepository.findAll();
         assertThat(productPositionsList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ProductPositions.class);
-        ProductPositions productPositions1 = new ProductPositions();
-        productPositions1.setId(1L);
-        ProductPositions productPositions2 = new ProductPositions();
-        productPositions2.setId(productPositions1.getId());
-        assertThat(productPositions1).isEqualTo(productPositions2);
-        productPositions2.setId(2L);
-        assertThat(productPositions1).isNotEqualTo(productPositions2);
-        productPositions1.setId(null);
-        assertThat(productPositions1).isNotEqualTo(productPositions2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ProductPositionsDTO.class);
-        ProductPositionsDTO productPositionsDTO1 = new ProductPositionsDTO();
-        productPositionsDTO1.setId(1L);
-        ProductPositionsDTO productPositionsDTO2 = new ProductPositionsDTO();
-        assertThat(productPositionsDTO1).isNotEqualTo(productPositionsDTO2);
-        productPositionsDTO2.setId(productPositionsDTO1.getId());
-        assertThat(productPositionsDTO1).isEqualTo(productPositionsDTO2);
-        productPositionsDTO2.setId(2L);
-        assertThat(productPositionsDTO1).isNotEqualTo(productPositionsDTO2);
-        productPositionsDTO1.setId(null);
-        assertThat(productPositionsDTO1).isNotEqualTo(productPositionsDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(productPositionsMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(productPositionsMapper.fromId(null)).isNull();
     }
 }

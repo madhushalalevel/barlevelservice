@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -96,8 +97,8 @@ public class ProductVariousPositionsDTO implements Serializable {
             ", xAxis=" + getxAxis() +
             ", yAxis=" + getyAxis() +
             ", order=" + getOrder() +
-            ", product=" + getProductId() +
-            ", product='" + getProductName() + "'" +
+            ", productId=" + getProductId() +
+            ", productName='" + getProductName() + "'" +
             "}";
     }
 }

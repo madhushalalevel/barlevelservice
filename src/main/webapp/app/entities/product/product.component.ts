@@ -1,131 +1,106 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IProduct } from 'app/shared/model/product.model';
-import { AccountService } from 'app/core';
 
-import { ITEMS_PER_PAGE } from 'app/shared';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ProductService } from './product.service';
+import { ProductDeleteDialogComponent } from './product-delete-dialog.component';
 
 @Component({
   selector: 'jhi-product',
   templateUrl: './product.component.html'
 })
 export class ProductComponent implements OnInit, OnDestroy {
-  currentAccount: any;
-  products: IProduct[];
-  error: any;
-  success: any;
-  eventSubscriber: Subscription;
-  routeData: any;
-  links: any;
-  totalItems: any;
-  itemsPerPage: any;
-  page: any;
-  predicate: any;
-  previousPage: any;
-  reverse: any;
+  products?: IProduct[];
+  eventSubscriber?: Subscription;
+  totalItems = 0;
+  itemsPerPage = ITEMS_PER_PAGE;
+  page!: number;
+  predicate!: string;
+  ascending!: boolean;
+  ngbPaginationPage = 1;
 
   constructor(
     protected productService: ProductService,
-    protected parseLinks: JhiParseLinks,
-    protected jhiAlertService: JhiAlertService,
-    protected accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected eventManager: JhiEventManager
-  ) {
-    this.itemsPerPage = ITEMS_PER_PAGE;
-    this.routeData = this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.previousPage = data.pagingParams.page;
-      this.reverse = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-    });
-  }
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal
+  ) {}
 
-  loadAll() {
+  loadPage(page?: number): void {
+    const pageToLoad: number = page || this.page;
+
     this.productService
       .query({
-        page: this.page - 1,
+        page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort()
       })
       .subscribe(
-        (res: HttpResponse<IProduct[]>) => this.paginateProducts(res.body, res.headers),
-        (res: HttpErrorResponse) => this.onError(res.message)
+        (res: HttpResponse<IProduct[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        () => this.onError()
       );
   }
 
-  loadPage(page: number) {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
-  }
-
-  transition() {
-    this.router.navigate(['/product'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-      }
-    });
-    this.loadAll();
-  }
-
-  clear() {
-    this.page = 0;
-    this.router.navigate([
-      '/product',
-      {
-        page: this.page,
-        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-      }
-    ]);
-    this.loadAll();
-  }
-
-  ngOnInit() {
-    this.loadAll();
-    this.accountService.identity().then(account => {
-      this.currentAccount = account;
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(data => {
+      this.page = data.pagingParams.page;
+      this.ascending = data.pagingParams.ascending;
+      this.predicate = data.pagingParams.predicate;
+      this.ngbPaginationPage = data.pagingParams.page;
+      this.loadPage();
     });
     this.registerChangeInProducts();
   }
 
-  ngOnDestroy() {
-    this.eventManager.destroy(this.eventSubscriber);
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
+    }
   }
 
-  trackId(index: number, item: IProduct) {
-    return item.id;
+  trackId(index: number, item: IProduct): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
   }
 
-  registerChangeInProducts() {
-    this.eventSubscriber = this.eventManager.subscribe('productListModification', response => this.loadAll());
+  registerChangeInProducts(): void {
+    this.eventSubscriber = this.eventManager.subscribe('productListModification', () => this.loadPage());
   }
 
-  sort() {
-    const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+  delete(product: IProduct): void {
+    const modalRef = this.modalService.open(ProductDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.product = product;
+  }
+
+  sort(): string[] {
+    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
       result.push('id');
     }
     return result;
   }
 
-  protected paginateProducts(data: IProduct[], headers: HttpHeaders) {
-    this.links = this.parseLinks.parse(headers.get('link'));
-    this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-    this.products = data;
+  protected onSuccess(data: IProduct[] | null, headers: HttpHeaders, page: number): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    this.router.navigate(['/product'], {
+      queryParams: {
+        page: this.page,
+        size: this.itemsPerPage,
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
+      }
+    });
+    this.products = data || [];
   }
 
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
+  protected onError(): void {
+    this.ngbPaginationPage = this.page;
   }
 }

@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 import com.mycompany.myapp.domain.enumeration.BarCodeType;
 
@@ -48,7 +46,7 @@ public class Product implements Serializable {
     @Column(name = "volume")
     private Double volume;
 
-    @Column(name = "jhi_type")
+    @Column(name = "type")
     private String type;
 
     @Column(name = "sub_type")
@@ -76,7 +74,7 @@ public class Product implements Serializable {
     private ProductImage productImage;
 
     @ManyToOne
-    @JsonIgnoreProperties("products")
+    @JsonIgnoreProperties("employees")
     private Inventory inventory;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

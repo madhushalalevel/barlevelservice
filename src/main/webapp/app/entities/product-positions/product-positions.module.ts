@@ -1,45 +1,21 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
 
-import { BarLevelServiceSharedModule } from 'app/shared';
-import {
-  ProductPositionsComponent,
-  ProductPositionsDetailComponent,
-  ProductPositionsUpdateComponent,
-  ProductPositionsDeletePopupComponent,
-  ProductPositionsDeleteDialogComponent,
-  productPositionsRoute,
-  productPositionsPopupRoute
-} from './';
-
-const ENTITY_STATES = [...productPositionsRoute, ...productPositionsPopupRoute];
+import { BarLevelServiceSharedModule } from 'app/shared/shared.module';
+import { ProductPositionsComponent } from './product-positions.component';
+import { ProductPositionsDetailComponent } from './product-positions-detail.component';
+import { ProductPositionsUpdateComponent } from './product-positions-update.component';
+import { ProductPositionsDeleteDialogComponent } from './product-positions-delete-dialog.component';
+import { productPositionsRoute } from './product-positions.route';
 
 @NgModule({
-  imports: [BarLevelServiceSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [BarLevelServiceSharedModule, RouterModule.forChild(productPositionsRoute)],
   declarations: [
     ProductPositionsComponent,
     ProductPositionsDetailComponent,
     ProductPositionsUpdateComponent,
-    ProductPositionsDeleteDialogComponent,
-    ProductPositionsDeletePopupComponent
+    ProductPositionsDeleteDialogComponent
   ],
-  entryComponents: [
-    ProductPositionsComponent,
-    ProductPositionsUpdateComponent,
-    ProductPositionsDeleteDialogComponent,
-    ProductPositionsDeletePopupComponent
-  ],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  entryComponents: [ProductPositionsDeleteDialogComponent]
 })
-export class BarLevelServiceProductPositionsModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey !== undefined) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
-}
+export class BarLevelServiceProductPositionsModule {}

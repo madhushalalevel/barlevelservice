@@ -1,58 +1,61 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="product">
-            <h2><span jhiTranslate="barLevelServiceApp.product.detail.title">Product</span> {{product.id}}</h2>
+            <h2><span jhiTranslate="barLevelServiceApp.product.detail.title">Product</span> {{ product.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="barLevelServiceApp.product.productID" [ngbTooltip]="'barLevelServiceApp.product.help.productID' | translate">Product ID</span></dt>
                 <dd>
-                    <span>{{product.productID}}</span>
+                    <span>{{ product.productID }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.name">Name</span></dt>
                 <dd>
-                    <span>{{product.name}}</span>
+                    <span>{{ product.name }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.barCode">Bar Code</span></dt>
                 <dd>
-                    <span>{{product.barCode}}</span>
+                    <span>{{ product.barCode }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.quantity">Quantity</span></dt>
                 <dd>
-                    <span>{{product.quantity}}</span>
+                    <span>{{ product.quantity }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.volume">Volume</span></dt>
                 <dd>
-                    <span>{{product.volume}}</span>
+                    <span>{{ product.volume }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.type">Type</span></dt>
                 <dd>
-                    <span>{{product.type}}</span>
+                    <span>{{ product.type }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.subType">Sub Type</span></dt>
                 <dd>
-                    <span>{{product.subType}}</span>
+                    <span>{{ product.subType }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.price">Price</span></dt>
                 <dd>
-                    <span>{{product.price}}</span>
+                    <span>{{ product.price }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.containerType">Container Type</span></dt>
                 <dd>
-                    <span>{{product.containerType}}</span>
+                    <span>{{ product.containerType }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.barCodeType">Bar Code Type</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'barLevelServiceApp.BarCodeType.' + product.barCodeType}}">{{product.barCodeType}}</span>
+                    <span jhiTranslate="{{ 'barLevelServiceApp.BarCodeType.' + product.barCodeType }}">{{ product.barCodeType }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.tenantId">Tenant Id</span></dt>
                 <dd>
-                    <span>{{product.tenantId}}</span>
+                    <span>{{ product.tenantId }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.product.inventory">Inventory</span></dt>
                 <dd>
                     <div *ngIf="product.inventoryId">
-                        <a [routerLink]="['/inventory', product.inventoryId, 'view']">{{product.inventoryId}}</a>
+                        <a [routerLink]="['/inventory', product.inventoryId, 'view']">{{ product.inventoryId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -60,13 +63,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/product', product.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

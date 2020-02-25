@@ -1,5 +1,6 @@
 package com.mycompany.myapp.service.mapper;
 
+
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.dto.CompanyDTO;
 
@@ -15,6 +16,7 @@ public interface CompanyMapper extends EntityMapper<CompanyDTO, Company> {
     CompanyDTO toDto(Company company);
 
     @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "removeEmployee", ignore = true)
     @Mapping(source = "inventoryId", target = "inventory")
     Company toEntity(CompanyDTO companyDTO);
 

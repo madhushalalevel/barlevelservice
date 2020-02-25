@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -86,7 +87,7 @@ public class CompanyDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", discription='" + getDiscription() + "'" +
             ", tenantId='" + getTenantId() + "'" +
-            ", inventory=" + getInventoryId() +
+            ", inventoryId=" + getInventoryId() +
             "}";
     }
 }

@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link ZoneResource} REST controller.
+ * Integration tests for the {@link ZoneResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class ZoneResourceIT {
@@ -130,7 +130,7 @@ public class ZoneResourceIT {
         // Create the Zone
         ZoneDTO zoneDTO = zoneMapper.toDto(zone);
         restZoneMockMvc.perform(post("/api/zones")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(zoneDTO)))
             .andExpect(status().isCreated());
 
@@ -155,7 +155,7 @@ public class ZoneResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restZoneMockMvc.perform(post("/api/zones")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(zoneDTO)))
             .andExpect(status().isBadRequest());
 
@@ -174,12 +174,12 @@ public class ZoneResourceIT {
         // Get all the zoneList
         restZoneMockMvc.perform(get("/api/zones?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(zone.getId().intValue())))
             .andExpect(jsonPath("$.[*].zoneID").value(hasItem(DEFAULT_ZONE_ID)))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION)))
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)));
     }
     
     @Test
@@ -191,12 +191,12 @@ public class ZoneResourceIT {
         // Get the zone
         restZoneMockMvc.perform(get("/api/zones/{id}", zone.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(zone.getId().intValue()))
             .andExpect(jsonPath("$.zoneID").value(DEFAULT_ZONE_ID))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION.toString()))
-            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION))
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class ZoneResourceIT {
         ZoneDTO zoneDTO = zoneMapper.toDto(updatedZone);
 
         restZoneMockMvc.perform(put("/api/zones")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(zoneDTO)))
             .andExpect(status().isOk());
 
@@ -251,7 +251,7 @@ public class ZoneResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restZoneMockMvc.perform(put("/api/zones")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(zoneDTO)))
             .andExpect(status().isBadRequest());
 
@@ -270,49 +270,11 @@ public class ZoneResourceIT {
 
         // Delete the zone
         restZoneMockMvc.perform(delete("/api/zones/{id}", zone.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Zone> zoneList = zoneRepository.findAll();
         assertThat(zoneList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Zone.class);
-        Zone zone1 = new Zone();
-        zone1.setId(1L);
-        Zone zone2 = new Zone();
-        zone2.setId(zone1.getId());
-        assertThat(zone1).isEqualTo(zone2);
-        zone2.setId(2L);
-        assertThat(zone1).isNotEqualTo(zone2);
-        zone1.setId(null);
-        assertThat(zone1).isNotEqualTo(zone2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ZoneDTO.class);
-        ZoneDTO zoneDTO1 = new ZoneDTO();
-        zoneDTO1.setId(1L);
-        ZoneDTO zoneDTO2 = new ZoneDTO();
-        assertThat(zoneDTO1).isNotEqualTo(zoneDTO2);
-        zoneDTO2.setId(zoneDTO1.getId());
-        assertThat(zoneDTO1).isEqualTo(zoneDTO2);
-        zoneDTO2.setId(2L);
-        assertThat(zoneDTO1).isNotEqualTo(zoneDTO2);
-        zoneDTO1.setId(null);
-        assertThat(zoneDTO1).isNotEqualTo(zoneDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(zoneMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(zoneMapper.fromId(null)).isNull();
     }
 }

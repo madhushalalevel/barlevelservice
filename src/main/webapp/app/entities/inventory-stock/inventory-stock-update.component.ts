@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+
 import { IInventoryStock, InventoryStock } from 'app/shared/model/inventory-stock.model';
 import { InventoryStockService } from './inventory-stock.service';
 
@@ -11,8 +13,7 @@ import { InventoryStockService } from './inventory-stock.service';
   templateUrl: './inventory-stock-update.component.html'
 })
 export class InventoryStockUpdateComponent implements OnInit {
-  inventoryStock: IInventoryStock;
-  isSaving: boolean;
+  isSaving = false;
 
   editForm = this.fb.group({
     id: [],
@@ -24,15 +25,13 @@ export class InventoryStockUpdateComponent implements OnInit {
 
   constructor(protected inventoryStockService: InventoryStockService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ inventoryStock }) => {
       this.updateForm(inventoryStock);
-      this.inventoryStock = inventoryStock;
     });
   }
 
-  updateForm(inventoryStock: IInventoryStock) {
+  updateForm(inventoryStock: IInventoryStock): void {
     this.editForm.patchValue({
       id: inventoryStock.id,
       inventoryId: inventoryStock.inventoryId,
@@ -42,11 +41,11 @@ export class InventoryStockUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const inventoryStock = this.createFromForm();
     if (inventoryStock.id !== undefined) {
@@ -57,27 +56,29 @@ export class InventoryStockUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IInventoryStock {
-    const entity = {
+    return {
       ...new InventoryStock(),
-      id: this.editForm.get(['id']).value,
-      inventoryId: this.editForm.get(['inventoryId']).value,
-      productID: this.editForm.get(['productID']).value,
-      stockCount: this.editForm.get(['stockCount']).value,
-      datetime: this.editForm.get(['datetime']).value
+      id: this.editForm.get(['id'])!.value,
+      inventoryId: this.editForm.get(['inventoryId'])!.value,
+      productID: this.editForm.get(['productID'])!.value,
+      stockCount: this.editForm.get(['stockCount'])!.value,
+      datetime: this.editForm.get(['datetime'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInventoryStock>>) {
-    result.subscribe((res: HttpResponse<IInventoryStock>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInventoryStock>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
 }

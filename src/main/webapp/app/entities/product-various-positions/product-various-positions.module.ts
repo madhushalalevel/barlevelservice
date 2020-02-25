@@ -1,45 +1,21 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
 
-import { BarLevelServiceSharedModule } from 'app/shared';
-import {
-  ProductVariousPositionsComponent,
-  ProductVariousPositionsDetailComponent,
-  ProductVariousPositionsUpdateComponent,
-  ProductVariousPositionsDeletePopupComponent,
-  ProductVariousPositionsDeleteDialogComponent,
-  productVariousPositionsRoute,
-  productVariousPositionsPopupRoute
-} from './';
-
-const ENTITY_STATES = [...productVariousPositionsRoute, ...productVariousPositionsPopupRoute];
+import { BarLevelServiceSharedModule } from 'app/shared/shared.module';
+import { ProductVariousPositionsComponent } from './product-various-positions.component';
+import { ProductVariousPositionsDetailComponent } from './product-various-positions-detail.component';
+import { ProductVariousPositionsUpdateComponent } from './product-various-positions-update.component';
+import { ProductVariousPositionsDeleteDialogComponent } from './product-various-positions-delete-dialog.component';
+import { productVariousPositionsRoute } from './product-various-positions.route';
 
 @NgModule({
-  imports: [BarLevelServiceSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [BarLevelServiceSharedModule, RouterModule.forChild(productVariousPositionsRoute)],
   declarations: [
     ProductVariousPositionsComponent,
     ProductVariousPositionsDetailComponent,
     ProductVariousPositionsUpdateComponent,
-    ProductVariousPositionsDeleteDialogComponent,
-    ProductVariousPositionsDeletePopupComponent
+    ProductVariousPositionsDeleteDialogComponent
   ],
-  entryComponents: [
-    ProductVariousPositionsComponent,
-    ProductVariousPositionsUpdateComponent,
-    ProductVariousPositionsDeleteDialogComponent,
-    ProductVariousPositionsDeletePopupComponent
-  ],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  entryComponents: [ProductVariousPositionsDeleteDialogComponent]
 })
-export class BarLevelServiceProductVariousPositionsModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey !== undefined) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
-}
+export class BarLevelServiceProductVariousPositionsModule {}

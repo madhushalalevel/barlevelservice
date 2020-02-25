@@ -9,24 +9,23 @@ import { IProductImage } from 'app/shared/model/product-image.model';
   templateUrl: './product-image-detail.component.html'
 })
 export class ProductImageDetailComponent implements OnInit {
-  productImage: IProductImage;
+  productImage: IProductImage | null = null;
 
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ productImage }) => {
-      this.productImage = productImage;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ productImage }) => (this.productImage = productImage));
   }
 
-  byteSize(field) {
-    return this.dataUtils.byteSize(field);
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType, field) {
-    return this.dataUtils.openFile(contentType, field);
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
   }
-  previousState() {
+
+  previousState(): void {
     window.history.back();
   }
 }

@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.Objects;
@@ -86,8 +87,8 @@ public class ProductPositionsDTO implements Serializable {
             "id=" + getId() +
             ", position=" + getPosition() +
             ", updatedTime='" + getUpdatedTime() + "'" +
-            ", product=" + getProductId() +
-            ", product='" + getProductName() + "'" +
+            ", productId=" + getProductId() +
+            ", productName='" + getProductName() + "'" +
             "}";
     }
 }

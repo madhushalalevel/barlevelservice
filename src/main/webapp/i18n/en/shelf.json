@@ -4,7 +4,8 @@
       "home": {
         "title": "Shelves",
         "createLabel": "Create a new Shelf",
-        "createOrEditLabel": "Create or edit a Shelf"
+        "createOrEditLabel": "Create or edit a Shelf",
+        "notFound": "No Shelves found"
       },
       "created": "A new Shelf is created with identifier {{ param }}",
       "updated": "A Shelf is updated with identifier {{ param }}",

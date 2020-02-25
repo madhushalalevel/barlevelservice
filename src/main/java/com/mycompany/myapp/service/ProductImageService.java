@@ -58,7 +58,6 @@ public class ProductImageService {
             .map(productImageMapper::toDto);
     }
 
-
     /**
      * Get one productImage by id.
      *

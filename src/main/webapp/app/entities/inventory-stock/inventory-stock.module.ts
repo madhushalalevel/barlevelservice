@@ -1,45 +1,21 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
 
-import { BarLevelServiceSharedModule } from 'app/shared';
-import {
-  InventoryStockComponent,
-  InventoryStockDetailComponent,
-  InventoryStockUpdateComponent,
-  InventoryStockDeletePopupComponent,
-  InventoryStockDeleteDialogComponent,
-  inventoryStockRoute,
-  inventoryStockPopupRoute
-} from './';
-
-const ENTITY_STATES = [...inventoryStockRoute, ...inventoryStockPopupRoute];
+import { BarLevelServiceSharedModule } from 'app/shared/shared.module';
+import { InventoryStockComponent } from './inventory-stock.component';
+import { InventoryStockDetailComponent } from './inventory-stock-detail.component';
+import { InventoryStockUpdateComponent } from './inventory-stock-update.component';
+import { InventoryStockDeleteDialogComponent } from './inventory-stock-delete-dialog.component';
+import { inventoryStockRoute } from './inventory-stock.route';
 
 @NgModule({
-  imports: [BarLevelServiceSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [BarLevelServiceSharedModule, RouterModule.forChild(inventoryStockRoute)],
   declarations: [
     InventoryStockComponent,
     InventoryStockDetailComponent,
     InventoryStockUpdateComponent,
-    InventoryStockDeleteDialogComponent,
-    InventoryStockDeletePopupComponent
+    InventoryStockDeleteDialogComponent
   ],
-  entryComponents: [
-    InventoryStockComponent,
-    InventoryStockUpdateComponent,
-    InventoryStockDeleteDialogComponent,
-    InventoryStockDeletePopupComponent
-  ],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  entryComponents: [InventoryStockDeleteDialogComponent]
 })
-export class BarLevelServiceInventoryStockModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey !== undefined) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
-}
+export class BarLevelServiceInventoryStockModule {}

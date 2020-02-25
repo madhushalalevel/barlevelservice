@@ -63,9 +63,8 @@ public class AddressService {
     }
 
 
-
     /**
-    *  Get all the addresses where Branch is {@code null}.
+     *  Get all the addresses where Branch is {@code null}.
      *  @return the list of entities.
      */
     @Transactional(readOnly = true) 
@@ -80,7 +79,7 @@ public class AddressService {
 
 
     /**
-    *  Get all the addresses where Employee is {@code null}.
+     *  Get all the addresses where Employee is {@code null}.
      *  @return the list of entities.
      */
     @Transactional(readOnly = true) 

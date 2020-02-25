@@ -63,9 +63,8 @@ public class ProductService {
     }
 
 
-
     /**
-    *  Get all the products where ProductImage is {@code null}.
+     *  Get all the products where ProductImage is {@code null}.
      *  @return the list of entities.
      */
     @Transactional(readOnly = true) 

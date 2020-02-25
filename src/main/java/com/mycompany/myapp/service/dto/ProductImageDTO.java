@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
@@ -86,7 +87,7 @@ public class ProductImageDTO implements Serializable {
             "id=" + getId() +
             ", imageUrl='" + getImageUrl() + "'" +
             ", image='" + getImage() + "'" +
-            ", product=" + getProductId() +
+            ", productId=" + getProductId() +
             "}";
     }
 }

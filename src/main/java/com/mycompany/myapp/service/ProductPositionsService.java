@@ -58,7 +58,6 @@ public class ProductPositionsService {
             .map(productPositionsMapper::toDto);
     }
 
-
     /**
      * Get one productPositions by id.
      *

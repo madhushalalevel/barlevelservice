@@ -8,17 +8,15 @@ import { IBranch } from 'app/shared/model/branch.model';
   templateUrl: './branch-detail.component.html'
 })
 export class BranchDetailComponent implements OnInit {
-  branch: IBranch;
+  branch: IBranch | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ branch }) => {
-      this.branch = branch;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ branch }) => (this.branch = branch));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

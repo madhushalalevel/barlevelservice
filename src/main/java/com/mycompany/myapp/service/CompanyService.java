@@ -58,7 +58,6 @@ public class CompanyService {
             .map(companyMapper::toDto);
     }
 
-
     /**
      * Get one company by id.
      *

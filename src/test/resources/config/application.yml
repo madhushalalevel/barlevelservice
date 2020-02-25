@@ -24,9 +24,11 @@ spring:
     password:
     hikari:
       auto-commit: false
+  jackson:
+    serialization:
+      write-durations-as-timestamps: false
   jpa:
     database-platform: io.github.jhipster.domain.util.FixedH2Dialect
-    database: H2
     open-in-view: false
     show-sql: false
     hibernate:
@@ -83,9 +85,8 @@ jhipster:
   logging:
     # To test json console appender
     use-json-format: true # By default, logs are in Json format
-    # To test logstash appender
     logstash:
-      enabled: true
+      enabled: false
       host: localhost
       port: 5000
       queue-size: 512

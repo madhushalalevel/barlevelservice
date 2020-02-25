@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link CompanyResource} REST controller.
+ * Integration tests for the {@link CompanyResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class CompanyResourceIT {
@@ -125,7 +125,7 @@ public class CompanyResourceIT {
         // Create the Company
         CompanyDTO companyDTO = companyMapper.toDto(company);
         restCompanyMockMvc.perform(post("/api/companies")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isCreated());
 
@@ -149,7 +149,7 @@ public class CompanyResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCompanyMockMvc.perform(post("/api/companies")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isBadRequest());
 
@@ -168,11 +168,11 @@ public class CompanyResourceIT {
         // Get all the companyList
         restCompanyMockMvc.perform(get("/api/companies?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION)))
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)));
     }
     
     @Test
@@ -184,11 +184,11 @@ public class CompanyResourceIT {
         // Get the company
         restCompanyMockMvc.perform(get("/api/companies/{id}", company.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(company.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION.toString()))
-            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION))
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID));
     }
 
     @Test
@@ -218,7 +218,7 @@ public class CompanyResourceIT {
         CompanyDTO companyDTO = companyMapper.toDto(updatedCompany);
 
         restCompanyMockMvc.perform(put("/api/companies")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isOk());
 
@@ -241,7 +241,7 @@ public class CompanyResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCompanyMockMvc.perform(put("/api/companies")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyDTO)))
             .andExpect(status().isBadRequest());
 
@@ -260,49 +260,11 @@ public class CompanyResourceIT {
 
         // Delete the company
         restCompanyMockMvc.perform(delete("/api/companies/{id}", company.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Company> companyList = companyRepository.findAll();
         assertThat(companyList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Company.class);
-        Company company1 = new Company();
-        company1.setId(1L);
-        Company company2 = new Company();
-        company2.setId(company1.getId());
-        assertThat(company1).isEqualTo(company2);
-        company2.setId(2L);
-        assertThat(company1).isNotEqualTo(company2);
-        company1.setId(null);
-        assertThat(company1).isNotEqualTo(company2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(CompanyDTO.class);
-        CompanyDTO companyDTO1 = new CompanyDTO();
-        companyDTO1.setId(1L);
-        CompanyDTO companyDTO2 = new CompanyDTO();
-        assertThat(companyDTO1).isNotEqualTo(companyDTO2);
-        companyDTO2.setId(companyDTO1.getId());
-        assertThat(companyDTO1).isEqualTo(companyDTO2);
-        companyDTO2.setId(2L);
-        assertThat(companyDTO1).isNotEqualTo(companyDTO2);
-        companyDTO1.setId(null);
-        assertThat(companyDTO1).isNotEqualTo(companyDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(companyMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(companyMapper.fromId(null)).isNull();
     }
 }

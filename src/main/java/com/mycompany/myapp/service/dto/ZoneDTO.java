@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -117,9 +118,9 @@ public class ZoneDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", discription='" + getDiscription() + "'" +
             ", tenantId='" + getTenantId() + "'" +
-            ", branch=" + getBranchId() +
-            ", branch='" + getBranchName() + "'" +
-            ", inventory=" + getInventoryId() +
+            ", branchId=" + getBranchId() +
+            ", branchName='" + getBranchName() + "'" +
+            ", inventoryId=" + getInventoryId() +
             "}";
     }
 }

@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
-import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { Zone } from 'app/shared/model/zone.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IZone, Zone } from 'app/shared/model/zone.model';
 import { ZoneService } from './zone.service';
 import { ZoneComponent } from './zone.component';
 import { ZoneDetailComponent } from './zone-detail.component';
 import { ZoneUpdateComponent } from './zone-update.component';
-import { ZoneDeletePopupComponent } from './zone-delete-dialog.component';
-import { IZone } from 'app/shared/model/zone.model';
 
 @Injectable({ providedIn: 'root' })
 export class ZoneResolve implements Resolve<IZone> {
-  constructor(private service: ZoneService) {}
+  constructor(private service: ZoneService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IZone> {
-    const id = route.params['id'] ? route.params['id'] : null;
+  resolve(route: ActivatedRouteSnapshot): Observable<IZone> | Observable<never> {
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<Zone>) => response.ok),
-        map((zone: HttpResponse<Zone>) => zone.body)
+        flatMap((zone: HttpResponse<Zone>) => {
+          if (zone.body) {
+            return of(zone.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new Zone());
@@ -78,21 +83,5 @@ export const zoneRoute: Routes = [
       pageTitle: 'barLevelServiceApp.zone.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const zonePopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: ZoneDeletePopupComponent,
-    resolve: {
-      zone: ZoneResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.zone.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

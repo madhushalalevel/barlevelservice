@@ -1,28 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
+
 import { IAddress, Address } from 'app/shared/model/address.model';
 import { AddressService } from './address.service';
-import { IBranch } from 'app/shared/model/branch.model';
-import { BranchService } from 'app/entities/branch';
-import { IEmployee } from 'app/shared/model/employee.model';
-import { EmployeeService } from 'app/entities/employee';
 
 @Component({
   selector: 'jhi-address-update',
   templateUrl: './address-update.component.html'
 })
 export class AddressUpdateComponent implements OnInit {
-  address: IAddress;
-  isSaving: boolean;
-
-  branches: IBranch[];
-
-  employees: IEmployee[];
+  isSaving = false;
 
   editForm = this.fb.group({
     id: [],
@@ -34,38 +25,15 @@ export class AddressUpdateComponent implements OnInit {
     zipCode: []
   });
 
-  constructor(
-    protected jhiAlertService: JhiAlertService,
-    protected addressService: AddressService,
-    protected branchService: BranchService,
-    protected employeeService: EmployeeService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  constructor(protected addressService: AddressService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ address }) => {
       this.updateForm(address);
-      this.address = address;
     });
-    this.branchService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IBranch[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IBranch[]>) => response.body)
-      )
-      .subscribe((res: IBranch[]) => (this.branches = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.employeeService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IEmployee[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IEmployee[]>) => response.body)
-      )
-      .subscribe((res: IEmployee[]) => (this.employees = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
-  updateForm(address: IAddress) {
+  updateForm(address: IAddress): void {
     this.editForm.patchValue({
       id: address.id,
       streetAddress1: address.streetAddress1,
@@ -77,11 +45,11 @@ export class AddressUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const address = this.createFromForm();
     if (address.id !== undefined) {
@@ -92,40 +60,31 @@ export class AddressUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IAddress {
-    const entity = {
+    return {
       ...new Address(),
-      id: this.editForm.get(['id']).value,
-      streetAddress1: this.editForm.get(['streetAddress1']).value,
-      streetAddress2: this.editForm.get(['streetAddress2']).value,
-      city: this.editForm.get(['city']).value,
-      state: this.editForm.get(['state']).value,
-      country: this.editForm.get(['country']).value,
-      zipCode: this.editForm.get(['zipCode']).value
+      id: this.editForm.get(['id'])!.value,
+      streetAddress1: this.editForm.get(['streetAddress1'])!.value,
+      streetAddress2: this.editForm.get(['streetAddress2'])!.value,
+      city: this.editForm.get(['city'])!.value,
+      state: this.editForm.get(['state'])!.value,
+      country: this.editForm.get(['country'])!.value,
+      zipCode: this.editForm.get(['zipCode'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IAddress>>) {
-    result.subscribe((res: HttpResponse<IAddress>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IAddress>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
-  }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
-
-  trackBranchById(index: number, item: IBranch) {
-    return item.id;
-  }
-
-  trackEmployeeById(index: number, item: IEmployee) {
-    return item.id;
   }
 }

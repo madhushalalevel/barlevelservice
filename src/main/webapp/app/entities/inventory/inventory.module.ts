@@ -1,40 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
 
-import { BarLevelServiceSharedModule } from 'app/shared';
-import {
-  InventoryComponent,
-  InventoryDetailComponent,
-  InventoryUpdateComponent,
-  InventoryDeletePopupComponent,
-  InventoryDeleteDialogComponent,
-  inventoryRoute,
-  inventoryPopupRoute
-} from './';
-
-const ENTITY_STATES = [...inventoryRoute, ...inventoryPopupRoute];
+import { BarLevelServiceSharedModule } from 'app/shared/shared.module';
+import { InventoryComponent } from './inventory.component';
+import { InventoryDetailComponent } from './inventory-detail.component';
+import { InventoryUpdateComponent } from './inventory-update.component';
+import { InventoryDeleteDialogComponent } from './inventory-delete-dialog.component';
+import { inventoryRoute } from './inventory.route';
 
 @NgModule({
-  imports: [BarLevelServiceSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [
-    InventoryComponent,
-    InventoryDetailComponent,
-    InventoryUpdateComponent,
-    InventoryDeleteDialogComponent,
-    InventoryDeletePopupComponent
-  ],
-  entryComponents: [InventoryComponent, InventoryUpdateComponent, InventoryDeleteDialogComponent, InventoryDeletePopupComponent],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [BarLevelServiceSharedModule, RouterModule.forChild(inventoryRoute)],
+  declarations: [InventoryComponent, InventoryDetailComponent, InventoryUpdateComponent, InventoryDeleteDialogComponent],
+  entryComponents: [InventoryDeleteDialogComponent]
 })
-export class BarLevelServiceInventoryModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey !== undefined) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
-}
+export class BarLevelServiceInventoryModule {}

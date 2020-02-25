@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
+import { map } from 'rxjs/operators';
+
 import { IEmployee, Employee } from 'app/shared/model/employee.model';
 import { EmployeeService } from './employee.service';
 import { ICompany } from 'app/shared/model/company.model';
-import { CompanyService } from 'app/entities/company';
+import { CompanyService } from 'app/entities/company/company.service';
 import { IAddress } from 'app/shared/model/address.model';
-import { AddressService } from 'app/entities/address';
+import { AddressService } from 'app/entities/address/address.service';
+
+type SelectableEntity = ICompany | IAddress;
 
 @Component({
   selector: 'jhi-employee-update',
   templateUrl: './employee-update.component.html'
 })
 export class EmployeeUpdateComponent implements OnInit {
-  employee: IEmployee;
-  isSaving: boolean;
-
-  companies: ICompany[];
-
-  addresses: IAddress[];
+  isSaving = false;
+  companies: ICompany[] = [];
+  addresses: IAddress[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -34,7 +34,6 @@ export class EmployeeUpdateComponent implements OnInit {
   });
 
   constructor(
-    protected jhiAlertService: JhiAlertService,
     protected employeeService: EmployeeService,
     protected companyService: CompanyService,
     protected addressService: AddressService,
@@ -42,47 +41,37 @@ export class EmployeeUpdateComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ employee }) => {
       this.updateForm(employee);
-      this.employee = employee;
-    });
-    this.companyService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<ICompany[]>) => mayBeOk.ok),
-        map((response: HttpResponse<ICompany[]>) => response.body)
-      )
-      .subscribe((res: ICompany[]) => (this.companies = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.addressService
-      .query({ filter: 'employee-is-null' })
-      .pipe(
-        filter((mayBeOk: HttpResponse<IAddress[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IAddress[]>) => response.body)
-      )
-      .subscribe(
-        (res: IAddress[]) => {
-          if (!this.employee.addressId) {
-            this.addresses = res;
+
+      this.companyService.query().subscribe((res: HttpResponse<ICompany[]>) => (this.companies = res.body || []));
+
+      this.addressService
+        .query({ filter: 'employee-is-null' })
+        .pipe(
+          map((res: HttpResponse<IAddress[]>) => {
+            return res.body || [];
+          })
+        )
+        .subscribe((resBody: IAddress[]) => {
+          if (!employee.addressId) {
+            this.addresses = resBody;
           } else {
             this.addressService
-              .find(this.employee.addressId)
+              .find(employee.addressId)
               .pipe(
-                filter((subResMayBeOk: HttpResponse<IAddress>) => subResMayBeOk.ok),
-                map((subResponse: HttpResponse<IAddress>) => subResponse.body)
+                map((subRes: HttpResponse<IAddress>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
               )
-              .subscribe(
-                (subRes: IAddress) => (this.addresses = [subRes].concat(res)),
-                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-              );
+              .subscribe((concatRes: IAddress[]) => (this.addresses = concatRes));
           }
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+        });
+    });
   }
 
-  updateForm(employee: IEmployee) {
+  updateForm(employee: IEmployee): void {
     this.editForm.patchValue({
       id: employee.id,
       name: employee.name,
@@ -93,11 +82,11 @@ export class EmployeeUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const employee = this.createFromForm();
     if (employee.id !== undefined) {
@@ -108,39 +97,34 @@ export class EmployeeUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IEmployee {
-    const entity = {
+    return {
       ...new Employee(),
-      id: this.editForm.get(['id']).value,
-      name: this.editForm.get(['name']).value,
-      phoneNumber: this.editForm.get(['phoneNumber']).value,
-      email: this.editForm.get(['email']).value,
-      companyId: this.editForm.get(['companyId']).value,
-      addressId: this.editForm.get(['addressId']).value
+      id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value,
+      phoneNumber: this.editForm.get(['phoneNumber'])!.value,
+      email: this.editForm.get(['email'])!.value,
+      companyId: this.editForm.get(['companyId'])!.value,
+      addressId: this.editForm.get(['addressId'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEmployee>>) {
-    result.subscribe((res: HttpResponse<IEmployee>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEmployee>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackCompanyById(index: number, item: ICompany) {
-    return item.id;
-  }
-
-  trackAddressById(index: number, item: IAddress) {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 }

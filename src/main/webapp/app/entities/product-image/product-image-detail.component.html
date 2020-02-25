@@ -1,27 +1,30 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="productImage">
-            <h2><span jhiTranslate="barLevelServiceApp.productImage.detail.title">Product Image</span> {{productImage.id}}</h2>
+            <h2><span jhiTranslate="barLevelServiceApp.productImage.detail.title">Product Image</span> {{ productImage.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="barLevelServiceApp.productImage.imageUrl">Image Url</span></dt>
                 <dd>
-                    <span>{{productImage.imageUrl}}</span>
+                    <span>{{ productImage.imageUrl }}</span>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.productImage.image">Image</span></dt>
                 <dd>
                     <div *ngIf="productImage.image">
-                        <a (click)="openFile(productImage.imageContentType, productImage.image)">
+                        <a (click)="openFile(productImage.imageContentType!, productImage.image)">
                             <img [src]="'data:' + productImage.imageContentType + ';base64,' + productImage.image" style="max-width: 100%;" alt="productImage image"/>
                         </a>
-                        {{productImage.imageContentType}}, {{byteSize(productImage.image)}}
+                        {{ productImage.imageContentType }}, {{ byteSize(productImage.image) }}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="barLevelServiceApp.productImage.product">Product</span></dt>
                 <dd>
                     <div *ngIf="productImage.productId">
-                        <a [routerLink]="['/product', productImage.productId, 'view']">{{productImage.productId}}</a>
+                        <a [routerLink]="['/product', productImage.productId, 'view']">{{ productImage.productId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -29,13 +32,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/product-image', productImage.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

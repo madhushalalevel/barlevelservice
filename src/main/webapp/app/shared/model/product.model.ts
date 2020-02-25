@@ -1,9 +1,5 @@
 import { IProductPositions } from 'app/shared/model/product-positions.model';
-
-export const enum BarCodeType {
-  PUC = 'PUC',
-  EAN = 'EAN'
-}
+import { BarCodeType } from 'app/shared/model/enumerations/bar-code-type.model';
 
 export interface IProduct {
   id?: number;

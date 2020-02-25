@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link EmployeeResource} REST controller.
+ * Integration tests for the {@link EmployeeResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class EmployeeResourceIT {
@@ -125,7 +125,7 @@ public class EmployeeResourceIT {
         // Create the Employee
         EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
         restEmployeeMockMvc.perform(post("/api/employees")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isCreated());
 
@@ -149,7 +149,7 @@ public class EmployeeResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEmployeeMockMvc.perform(post("/api/employees")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -168,11 +168,11 @@ public class EmployeeResourceIT {
         // Get all the employeeList
         restEmployeeMockMvc.perform(get("/api/employees?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(employee.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())));
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)));
     }
     
     @Test
@@ -184,11 +184,11 @@ public class EmployeeResourceIT {
         // Get the employee
         restEmployeeMockMvc.perform(get("/api/employees/{id}", employee.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(employee.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()));
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL));
     }
 
     @Test
@@ -218,7 +218,7 @@ public class EmployeeResourceIT {
         EmployeeDTO employeeDTO = employeeMapper.toDto(updatedEmployee);
 
         restEmployeeMockMvc.perform(put("/api/employees")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isOk());
 
@@ -241,7 +241,7 @@ public class EmployeeResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEmployeeMockMvc.perform(put("/api/employees")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isBadRequest());
 
@@ -260,49 +260,11 @@ public class EmployeeResourceIT {
 
         // Delete the employee
         restEmployeeMockMvc.perform(delete("/api/employees/{id}", employee.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Employee> employeeList = employeeRepository.findAll();
         assertThat(employeeList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Employee.class);
-        Employee employee1 = new Employee();
-        employee1.setId(1L);
-        Employee employee2 = new Employee();
-        employee2.setId(employee1.getId());
-        assertThat(employee1).isEqualTo(employee2);
-        employee2.setId(2L);
-        assertThat(employee1).isNotEqualTo(employee2);
-        employee1.setId(null);
-        assertThat(employee1).isNotEqualTo(employee2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(EmployeeDTO.class);
-        EmployeeDTO employeeDTO1 = new EmployeeDTO();
-        employeeDTO1.setId(1L);
-        EmployeeDTO employeeDTO2 = new EmployeeDTO();
-        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
-        employeeDTO2.setId(employeeDTO1.getId());
-        assertThat(employeeDTO1).isEqualTo(employeeDTO2);
-        employeeDTO2.setId(2L);
-        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
-        employeeDTO1.setId(null);
-        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(employeeMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(employeeMapper.fromId(null)).isNull();
     }
 }

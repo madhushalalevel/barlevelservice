@@ -1,5 +1,6 @@
 package com.mycompany.myapp.service.mapper;
 
+
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.dto.InventoryDTO;
 
@@ -13,10 +14,15 @@ public interface InventoryMapper extends EntityMapper<InventoryDTO, Inventory> {
 
 
     @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "removeEmployee", ignore = true)
     @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "removeEmployee", ignore = true)
     @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "removeEmployee", ignore = true)
     @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "removeEmployee", ignore = true)
     @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "removeEmployee", ignore = true)
     Inventory toEntity(InventoryDTO inventoryDTO);
 
     default Inventory fromId(Long id) {

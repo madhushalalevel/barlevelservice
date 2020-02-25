@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link UsageResource} REST controller.
+ * Integration tests for the {@link UsageResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class UsageResourceIT {
@@ -145,7 +145,7 @@ public class UsageResourceIT {
         // Create the Usage
         UsageDTO usageDTO = usageMapper.toDto(usage);
         restUsageMockMvc.perform(post("/api/usages")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(usageDTO)))
             .andExpect(status().isCreated());
 
@@ -173,7 +173,7 @@ public class UsageResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUsageMockMvc.perform(post("/api/usages")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(usageDTO)))
             .andExpect(status().isBadRequest());
 
@@ -192,7 +192,7 @@ public class UsageResourceIT {
         // Get all the usageList
         restUsageMockMvc.perform(get("/api/usages?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(usage.getId().intValue())))
             .andExpect(jsonPath("$.[*].usageId").value(hasItem(DEFAULT_USAGE_ID)))
             .andExpect(jsonPath("$.[*].productID").value(hasItem(DEFAULT_PRODUCT_ID)))
@@ -212,7 +212,7 @@ public class UsageResourceIT {
         // Get the usage
         restUsageMockMvc.perform(get("/api/usages/{id}", usage.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(usage.getId().intValue()))
             .andExpect(jsonPath("$.usageId").value(DEFAULT_USAGE_ID))
             .andExpect(jsonPath("$.productID").value(DEFAULT_PRODUCT_ID))
@@ -254,7 +254,7 @@ public class UsageResourceIT {
         UsageDTO usageDTO = usageMapper.toDto(updatedUsage);
 
         restUsageMockMvc.perform(put("/api/usages")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(usageDTO)))
             .andExpect(status().isOk());
 
@@ -281,7 +281,7 @@ public class UsageResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUsageMockMvc.perform(put("/api/usages")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(usageDTO)))
             .andExpect(status().isBadRequest());
 
@@ -300,49 +300,11 @@ public class UsageResourceIT {
 
         // Delete the usage
         restUsageMockMvc.perform(delete("/api/usages/{id}", usage.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Usage> usageList = usageRepository.findAll();
         assertThat(usageList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Usage.class);
-        Usage usage1 = new Usage();
-        usage1.setId(1L);
-        Usage usage2 = new Usage();
-        usage2.setId(usage1.getId());
-        assertThat(usage1).isEqualTo(usage2);
-        usage2.setId(2L);
-        assertThat(usage1).isNotEqualTo(usage2);
-        usage1.setId(null);
-        assertThat(usage1).isNotEqualTo(usage2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(UsageDTO.class);
-        UsageDTO usageDTO1 = new UsageDTO();
-        usageDTO1.setId(1L);
-        UsageDTO usageDTO2 = new UsageDTO();
-        assertThat(usageDTO1).isNotEqualTo(usageDTO2);
-        usageDTO2.setId(usageDTO1.getId());
-        assertThat(usageDTO1).isEqualTo(usageDTO2);
-        usageDTO2.setId(2L);
-        assertThat(usageDTO1).isNotEqualTo(usageDTO2);
-        usageDTO1.setId(null);
-        assertThat(usageDTO1).isNotEqualTo(usageDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(usageMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(usageMapper.fromId(null)).isNull();
     }
 }

@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link InventoryResource} REST controller.
+ * Integration tests for the {@link InventoryResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class InventoryResourceIT {
@@ -140,7 +140,7 @@ public class InventoryResourceIT {
         // Create the Inventory
         InventoryDTO inventoryDTO = inventoryMapper.toDto(inventory);
         restInventoryMockMvc.perform(post("/api/inventories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(inventoryDTO)))
             .andExpect(status().isCreated());
 
@@ -167,7 +167,7 @@ public class InventoryResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInventoryMockMvc.perform(post("/api/inventories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(inventoryDTO)))
             .andExpect(status().isBadRequest());
 
@@ -186,7 +186,7 @@ public class InventoryResourceIT {
         // Get all the inventoryList
         restInventoryMockMvc.perform(get("/api/inventories?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(inventory.getId().intValue())))
             .andExpect(jsonPath("$.[*].productID").value(hasItem(DEFAULT_PRODUCT_ID)))
             .andExpect(jsonPath("$.[*].tennentID").value(hasItem(DEFAULT_TENNENT_ID)))
@@ -205,7 +205,7 @@ public class InventoryResourceIT {
         // Get the inventory
         restInventoryMockMvc.perform(get("/api/inventories/{id}", inventory.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(inventory.getId().intValue()))
             .andExpect(jsonPath("$.productID").value(DEFAULT_PRODUCT_ID))
             .andExpect(jsonPath("$.tennentID").value(DEFAULT_TENNENT_ID))
@@ -245,7 +245,7 @@ public class InventoryResourceIT {
         InventoryDTO inventoryDTO = inventoryMapper.toDto(updatedInventory);
 
         restInventoryMockMvc.perform(put("/api/inventories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(inventoryDTO)))
             .andExpect(status().isOk());
 
@@ -271,7 +271,7 @@ public class InventoryResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInventoryMockMvc.perform(put("/api/inventories")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(inventoryDTO)))
             .andExpect(status().isBadRequest());
 
@@ -290,49 +290,11 @@ public class InventoryResourceIT {
 
         // Delete the inventory
         restInventoryMockMvc.perform(delete("/api/inventories/{id}", inventory.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Inventory> inventoryList = inventoryRepository.findAll();
         assertThat(inventoryList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Inventory.class);
-        Inventory inventory1 = new Inventory();
-        inventory1.setId(1L);
-        Inventory inventory2 = new Inventory();
-        inventory2.setId(inventory1.getId());
-        assertThat(inventory1).isEqualTo(inventory2);
-        inventory2.setId(2L);
-        assertThat(inventory1).isNotEqualTo(inventory2);
-        inventory1.setId(null);
-        assertThat(inventory1).isNotEqualTo(inventory2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(InventoryDTO.class);
-        InventoryDTO inventoryDTO1 = new InventoryDTO();
-        inventoryDTO1.setId(1L);
-        InventoryDTO inventoryDTO2 = new InventoryDTO();
-        assertThat(inventoryDTO1).isNotEqualTo(inventoryDTO2);
-        inventoryDTO2.setId(inventoryDTO1.getId());
-        assertThat(inventoryDTO1).isEqualTo(inventoryDTO2);
-        inventoryDTO2.setId(2L);
-        assertThat(inventoryDTO1).isNotEqualTo(inventoryDTO2);
-        inventoryDTO1.setId(null);
-        assertThat(inventoryDTO1).isNotEqualTo(inventoryDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(inventoryMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(inventoryMapper.fromId(null)).isNull();
     }
 }

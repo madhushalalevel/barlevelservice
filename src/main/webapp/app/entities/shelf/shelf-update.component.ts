@@ -1,28 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
+
 import { IShelf, Shelf } from 'app/shared/model/shelf.model';
 import { ShelfService } from './shelf.service';
 import { IZone } from 'app/shared/model/zone.model';
-import { ZoneService } from 'app/entities/zone';
+import { ZoneService } from 'app/entities/zone/zone.service';
 import { IInventory } from 'app/shared/model/inventory.model';
-import { InventoryService } from 'app/entities/inventory';
+import { InventoryService } from 'app/entities/inventory/inventory.service';
+
+type SelectableEntity = IZone | IInventory;
 
 @Component({
   selector: 'jhi-shelf-update',
   templateUrl: './shelf-update.component.html'
 })
 export class ShelfUpdateComponent implements OnInit {
-  shelf: IShelf;
-  isSaving: boolean;
-
-  zones: IZone[];
-
-  inventories: IInventory[];
+  isSaving = false;
+  zones: IZone[] = [];
+  inventories: IInventory[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -35,7 +34,6 @@ export class ShelfUpdateComponent implements OnInit {
   });
 
   constructor(
-    protected jhiAlertService: JhiAlertService,
     protected shelfService: ShelfService,
     protected zoneService: ZoneService,
     protected inventoryService: InventoryService,
@@ -43,29 +41,17 @@ export class ShelfUpdateComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ shelf }) => {
       this.updateForm(shelf);
-      this.shelf = shelf;
+
+      this.zoneService.query().subscribe((res: HttpResponse<IZone[]>) => (this.zones = res.body || []));
+
+      this.inventoryService.query().subscribe((res: HttpResponse<IInventory[]>) => (this.inventories = res.body || []));
     });
-    this.zoneService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IZone[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IZone[]>) => response.body)
-      )
-      .subscribe((res: IZone[]) => (this.zones = res), (res: HttpErrorResponse) => this.onError(res.message));
-    this.inventoryService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IInventory[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IInventory[]>) => response.body)
-      )
-      .subscribe((res: IInventory[]) => (this.inventories = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
-  updateForm(shelf: IShelf) {
+  updateForm(shelf: IShelf): void {
     this.editForm.patchValue({
       id: shelf.id,
       shelfID: shelf.shelfID,
@@ -77,11 +63,11 @@ export class ShelfUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const shelf = this.createFromForm();
     if (shelf.id !== undefined) {
@@ -92,40 +78,35 @@ export class ShelfUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IShelf {
-    const entity = {
+    return {
       ...new Shelf(),
-      id: this.editForm.get(['id']).value,
-      shelfID: this.editForm.get(['shelfID']).value,
-      name: this.editForm.get(['name']).value,
-      discription: this.editForm.get(['discription']).value,
-      tenantId: this.editForm.get(['tenantId']).value,
-      zoneId: this.editForm.get(['zoneId']).value,
-      inventoryId: this.editForm.get(['inventoryId']).value
+      id: this.editForm.get(['id'])!.value,
+      shelfID: this.editForm.get(['shelfID'])!.value,
+      name: this.editForm.get(['name'])!.value,
+      discription: this.editForm.get(['discription'])!.value,
+      tenantId: this.editForm.get(['tenantId'])!.value,
+      zoneId: this.editForm.get(['zoneId'])!.value,
+      inventoryId: this.editForm.get(['inventoryId'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IShelf>>) {
-    result.subscribe((res: HttpResponse<IShelf>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IShelf>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackZoneById(index: number, item: IZone) {
-    return item.id;
-  }
-
-  trackInventoryById(index: number, item: IInventory) {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 }

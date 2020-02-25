@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
@@ -180,7 +181,7 @@ public class ProductDTO implements Serializable {
             ", containerType='" + getContainerType() + "'" +
             ", barCodeType='" + getBarCodeType() + "'" +
             ", tenantId='" + getTenantId() + "'" +
-            ", inventory=" + getInventoryId() +
+            ", inventoryId=" + getInventoryId() +
             "}";
     }
 }

@@ -8,17 +8,15 @@ import { IInventory } from 'app/shared/model/inventory.model';
   templateUrl: './inventory-detail.component.html'
 })
 export class InventoryDetailComponent implements OnInit {
-  inventory: IInventory;
+  inventory: IInventory | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ inventory }) => {
-      this.inventory = inventory;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ inventory }) => (this.inventory = inventory));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

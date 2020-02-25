@@ -1,5 +1,6 @@
 package com.mycompany.myapp.service.mapper;
 
+
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.service.dto.ProductDTO;
 
@@ -15,6 +16,7 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     ProductDTO toDto(Product product);
 
     @Mapping(target = "productPositions", ignore = true)
+    @Mapping(target = "removeProductPositions", ignore = true)
     @Mapping(target = "productImage", ignore = true)
     @Mapping(source = "inventoryId", target = "inventory")
     Product toEntity(ProductDTO productDTO);

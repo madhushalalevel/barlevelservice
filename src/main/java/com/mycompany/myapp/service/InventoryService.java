@@ -58,7 +58,6 @@ public class InventoryService {
             .map(inventoryMapper::toDto);
     }
 
-
     /**
      * Get one inventory by id.
      *

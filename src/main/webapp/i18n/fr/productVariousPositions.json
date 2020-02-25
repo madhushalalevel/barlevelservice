@@ -4,7 +4,8 @@
       "home": {
         "title": "ProductVariousPositions",
         "createLabel": "Créer un nouveau Product Various Positions",
-        "createOrEditLabel": "Créer ou éditer un Product Various Positions"
+        "createOrEditLabel": "Créer ou éditer un Product Various Positions",
+        "notFound": "Aucun Product Various Positions trouvé"
       },
       "created": "Un nouveau Product Various Positions a été créé avec l'identifiant {{ param }}",
       "updated": "Le Product Various Positions avec l'identifiant {{ param }} a été mis à jour",

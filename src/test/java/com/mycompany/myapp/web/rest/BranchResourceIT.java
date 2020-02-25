@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link BranchResource} REST controller.
+ * Integration tests for the {@link BranchResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class BranchResourceIT {
@@ -130,7 +130,7 @@ public class BranchResourceIT {
         // Create the Branch
         BranchDTO branchDTO = branchMapper.toDto(branch);
         restBranchMockMvc.perform(post("/api/branches")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(branchDTO)))
             .andExpect(status().isCreated());
 
@@ -155,7 +155,7 @@ public class BranchResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restBranchMockMvc.perform(post("/api/branches")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(branchDTO)))
             .andExpect(status().isBadRequest());
 
@@ -174,12 +174,12 @@ public class BranchResourceIT {
         // Get all the branchList
         restBranchMockMvc.perform(get("/api/branches?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(branch.getId().intValue())))
             .andExpect(jsonPath("$.[*].branchID").value(hasItem(DEFAULT_BRANCH_ID)))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION)))
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)));
     }
     
     @Test
@@ -191,12 +191,12 @@ public class BranchResourceIT {
         // Get the branch
         restBranchMockMvc.perform(get("/api/branches/{id}", branch.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(branch.getId().intValue()))
             .andExpect(jsonPath("$.branchID").value(DEFAULT_BRANCH_ID))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION.toString()))
-            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION))
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class BranchResourceIT {
         BranchDTO branchDTO = branchMapper.toDto(updatedBranch);
 
         restBranchMockMvc.perform(put("/api/branches")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(branchDTO)))
             .andExpect(status().isOk());
 
@@ -251,7 +251,7 @@ public class BranchResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBranchMockMvc.perform(put("/api/branches")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(branchDTO)))
             .andExpect(status().isBadRequest());
 
@@ -270,49 +270,11 @@ public class BranchResourceIT {
 
         // Delete the branch
         restBranchMockMvc.perform(delete("/api/branches/{id}", branch.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Branch> branchList = branchRepository.findAll();
         assertThat(branchList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Branch.class);
-        Branch branch1 = new Branch();
-        branch1.setId(1L);
-        Branch branch2 = new Branch();
-        branch2.setId(branch1.getId());
-        assertThat(branch1).isEqualTo(branch2);
-        branch2.setId(2L);
-        assertThat(branch1).isNotEqualTo(branch2);
-        branch1.setId(null);
-        assertThat(branch1).isNotEqualTo(branch2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(BranchDTO.class);
-        BranchDTO branchDTO1 = new BranchDTO();
-        branchDTO1.setId(1L);
-        BranchDTO branchDTO2 = new BranchDTO();
-        assertThat(branchDTO1).isNotEqualTo(branchDTO2);
-        branchDTO2.setId(branchDTO1.getId());
-        assertThat(branchDTO1).isEqualTo(branchDTO2);
-        branchDTO2.setId(2L);
-        assertThat(branchDTO1).isNotEqualTo(branchDTO2);
-        branchDTO1.setId(null);
-        assertThat(branchDTO1).isNotEqualTo(branchDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(branchMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(branchMapper.fromId(null)).isNull();
     }
 }

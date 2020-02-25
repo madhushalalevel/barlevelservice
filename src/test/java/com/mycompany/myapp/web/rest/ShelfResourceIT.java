@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link ShelfResource} REST controller.
+ * Integration tests for the {@link ShelfResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class ShelfResourceIT {
@@ -130,7 +130,7 @@ public class ShelfResourceIT {
         // Create the Shelf
         ShelfDTO shelfDTO = shelfMapper.toDto(shelf);
         restShelfMockMvc.perform(post("/api/shelves")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(shelfDTO)))
             .andExpect(status().isCreated());
 
@@ -155,7 +155,7 @@ public class ShelfResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restShelfMockMvc.perform(post("/api/shelves")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(shelfDTO)))
             .andExpect(status().isBadRequest());
 
@@ -174,12 +174,12 @@ public class ShelfResourceIT {
         // Get all the shelfList
         restShelfMockMvc.perform(get("/api/shelves?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(shelf.getId().intValue())))
             .andExpect(jsonPath("$.[*].shelfID").value(hasItem(DEFAULT_SHELF_ID)))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].discription").value(hasItem(DEFAULT_DISCRIPTION)))
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)));
     }
     
     @Test
@@ -191,12 +191,12 @@ public class ShelfResourceIT {
         // Get the shelf
         restShelfMockMvc.perform(get("/api/shelves/{id}", shelf.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(shelf.getId().intValue()))
             .andExpect(jsonPath("$.shelfID").value(DEFAULT_SHELF_ID))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION.toString()))
-            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.discription").value(DEFAULT_DISCRIPTION))
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class ShelfResourceIT {
         ShelfDTO shelfDTO = shelfMapper.toDto(updatedShelf);
 
         restShelfMockMvc.perform(put("/api/shelves")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(shelfDTO)))
             .andExpect(status().isOk());
 
@@ -251,7 +251,7 @@ public class ShelfResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restShelfMockMvc.perform(put("/api/shelves")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(shelfDTO)))
             .andExpect(status().isBadRequest());
 
@@ -270,49 +270,11 @@ public class ShelfResourceIT {
 
         // Delete the shelf
         restShelfMockMvc.perform(delete("/api/shelves/{id}", shelf.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Shelf> shelfList = shelfRepository.findAll();
         assertThat(shelfList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Shelf.class);
-        Shelf shelf1 = new Shelf();
-        shelf1.setId(1L);
-        Shelf shelf2 = new Shelf();
-        shelf2.setId(shelf1.getId());
-        assertThat(shelf1).isEqualTo(shelf2);
-        shelf2.setId(2L);
-        assertThat(shelf1).isNotEqualTo(shelf2);
-        shelf1.setId(null);
-        assertThat(shelf1).isNotEqualTo(shelf2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ShelfDTO.class);
-        ShelfDTO shelfDTO1 = new ShelfDTO();
-        shelfDTO1.setId(1L);
-        ShelfDTO shelfDTO2 = new ShelfDTO();
-        assertThat(shelfDTO1).isNotEqualTo(shelfDTO2);
-        shelfDTO2.setId(shelfDTO1.getId());
-        assertThat(shelfDTO1).isEqualTo(shelfDTO2);
-        shelfDTO2.setId(2L);
-        assertThat(shelfDTO1).isNotEqualTo(shelfDTO2);
-        shelfDTO1.setId(null);
-        assertThat(shelfDTO1).isNotEqualTo(shelfDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(shelfMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(shelfMapper.fromId(null)).isNull();
     }
 }

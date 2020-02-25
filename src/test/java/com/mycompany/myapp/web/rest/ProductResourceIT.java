@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.mycompany.myapp.domain.enumeration.BarCodeType;
 /**
- * Integration tests for the {@Link ProductResource} REST controller.
+ * Integration tests for the {@link ProductResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class ProductResourceIT {
@@ -166,7 +166,7 @@ public class ProductResourceIT {
         // Create the Product
         ProductDTO productDTO = productMapper.toDto(product);
         restProductMockMvc.perform(post("/api/products")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isCreated());
 
@@ -198,7 +198,7 @@ public class ProductResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductMockMvc.perform(post("/api/products")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isBadRequest());
 
@@ -217,19 +217,19 @@ public class ProductResourceIT {
         // Get all the productList
         restProductMockMvc.perform(get("/api/products?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
             .andExpect(jsonPath("$.[*].productID").value(hasItem(DEFAULT_PRODUCT_ID)))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].barCode").value(hasItem(DEFAULT_BAR_CODE.toString())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].barCode").value(hasItem(DEFAULT_BAR_CODE)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].volume").value(hasItem(DEFAULT_VOLUME.doubleValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].subType").value(hasItem(DEFAULT_SUB_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].subType").value(hasItem(DEFAULT_SUB_TYPE)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].containerType").value(hasItem(DEFAULT_CONTAINER_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].containerType").value(hasItem(DEFAULT_CONTAINER_TYPE)))
             .andExpect(jsonPath("$.[*].barCodeType").value(hasItem(DEFAULT_BAR_CODE_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID.toString())));
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)));
     }
     
     @Test
@@ -241,19 +241,19 @@ public class ProductResourceIT {
         // Get the product
         restProductMockMvc.perform(get("/api/products/{id}", product.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
             .andExpect(jsonPath("$.productID").value(DEFAULT_PRODUCT_ID))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.barCode").value(DEFAULT_BAR_CODE.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.barCode").value(DEFAULT_BAR_CODE))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.volume").value(DEFAULT_VOLUME.doubleValue()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.subType").value(DEFAULT_SUB_TYPE.toString()))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
+            .andExpect(jsonPath("$.subType").value(DEFAULT_SUB_TYPE))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
-            .andExpect(jsonPath("$.containerType").value(DEFAULT_CONTAINER_TYPE.toString()))
+            .andExpect(jsonPath("$.containerType").value(DEFAULT_CONTAINER_TYPE))
             .andExpect(jsonPath("$.barCodeType").value(DEFAULT_BAR_CODE_TYPE.toString()))
-            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID.toString()));
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID));
     }
 
     @Test
@@ -291,7 +291,7 @@ public class ProductResourceIT {
         ProductDTO productDTO = productMapper.toDto(updatedProduct);
 
         restProductMockMvc.perform(put("/api/products")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isOk());
 
@@ -322,7 +322,7 @@ public class ProductResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductMockMvc.perform(put("/api/products")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isBadRequest());
 
@@ -341,49 +341,11 @@ public class ProductResourceIT {
 
         // Delete the product
         restProductMockMvc.perform(delete("/api/products/{id}", product.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Product.class);
-        Product product1 = new Product();
-        product1.setId(1L);
-        Product product2 = new Product();
-        product2.setId(product1.getId());
-        assertThat(product1).isEqualTo(product2);
-        product2.setId(2L);
-        assertThat(product1).isNotEqualTo(product2);
-        product1.setId(null);
-        assertThat(product1).isNotEqualTo(product2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ProductDTO.class);
-        ProductDTO productDTO1 = new ProductDTO();
-        productDTO1.setId(1L);
-        ProductDTO productDTO2 = new ProductDTO();
-        assertThat(productDTO1).isNotEqualTo(productDTO2);
-        productDTO2.setId(productDTO1.getId());
-        assertThat(productDTO1).isEqualTo(productDTO2);
-        productDTO2.setId(2L);
-        assertThat(productDTO1).isNotEqualTo(productDTO2);
-        productDTO1.setId(null);
-        assertThat(productDTO1).isNotEqualTo(productDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(productMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(productMapper.fromId(null)).isNull();
     }
 }

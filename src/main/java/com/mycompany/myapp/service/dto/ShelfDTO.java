@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -117,9 +118,9 @@ public class ShelfDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", discription='" + getDiscription() + "'" +
             ", tenantId='" + getTenantId() + "'" +
-            ", zone=" + getZoneId() +
-            ", zone='" + getZoneName() + "'" +
-            ", inventory=" + getInventoryId() +
+            ", zoneId=" + getZoneId() +
+            ", zoneName='" + getZoneName() + "'" +
+            ", inventoryId=" + getInventoryId() +
             "}";
     }
 }

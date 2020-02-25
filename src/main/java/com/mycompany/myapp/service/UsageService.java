@@ -58,7 +58,6 @@ public class UsageService {
             .map(usageMapper::toDto);
     }
 
-
     /**
      * Get one usage by id.
      *

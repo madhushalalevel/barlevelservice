@@ -4,7 +4,8 @@
       "home": {
         "title": "Product Positions",
         "createLabel": "Create a new Product Positions",
-        "createOrEditLabel": "Create or edit a Product Positions"
+        "createOrEditLabel": "Create or edit a Product Positions",
+        "notFound": "No Product Positions found"
       },
       "created": "A new Product Positions is created with identifier {{ param }}",
       "updated": "A Product Positions is updated with identifier {{ param }}",

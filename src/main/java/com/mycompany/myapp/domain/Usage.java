@@ -1,13 +1,11 @@
 package com.mycompany.myapp.domain;
 
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Usage.
@@ -39,7 +37,7 @@ public class Usage implements Serializable {
     @Column(name = "shelf_id")
     private Integer shelfID;
 
-    @Column(name = "jhi_usage")
+    @Column(name = "usage")
     private Integer usage;
 
     @Column(name = "datetime")

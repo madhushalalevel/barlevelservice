@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -127,10 +128,10 @@ public class BranchDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", discription='" + getDiscription() + "'" +
             ", tenantId='" + getTenantId() + "'" +
-            ", address=" + getAddressId() +
-            ", company=" + getCompanyId() +
-            ", company='" + getCompanyName() + "'" +
-            ", inventory=" + getInventoryId() +
+            ", addressId=" + getAddressId() +
+            ", companyId=" + getCompanyId() +
+            ", companyName='" + getCompanyName() + "'" +
+            ", inventoryId=" + getInventoryId() +
             "}";
     }
 }

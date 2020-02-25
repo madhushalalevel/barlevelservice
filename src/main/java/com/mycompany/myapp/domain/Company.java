@@ -1,7 +1,5 @@
 package com.mycompany.myapp.domain;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -11,7 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Company.
@@ -42,7 +39,7 @@ public class Company implements Serializable {
     private Set<Employee> employees = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties("companies")
+    @JsonIgnoreProperties("employees")
     private Inventory inventory;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

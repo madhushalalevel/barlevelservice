@@ -58,7 +58,6 @@ public class BranchService {
             .map(branchMapper::toDto);
     }
 
-
     /**
      * Get one branch by id.
      *

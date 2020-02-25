@@ -58,7 +58,6 @@ public class ZoneService {
             .map(zoneMapper::toDto);
     }
 
-
     /**
      * Get one zone by id.
      *

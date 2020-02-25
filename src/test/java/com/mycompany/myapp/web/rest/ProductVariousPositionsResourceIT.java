@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link ProductVariousPositionsResource} REST controller.
+ * Integration tests for the {@link ProductVariousPositionsResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class ProductVariousPositionsResourceIT {
@@ -125,7 +125,7 @@ public class ProductVariousPositionsResourceIT {
         // Create the ProductVariousPositions
         ProductVariousPositionsDTO productVariousPositionsDTO = productVariousPositionsMapper.toDto(productVariousPositions);
         restProductVariousPositionsMockMvc.perform(post("/api/product-various-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productVariousPositionsDTO)))
             .andExpect(status().isCreated());
 
@@ -149,7 +149,7 @@ public class ProductVariousPositionsResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductVariousPositionsMockMvc.perform(post("/api/product-various-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productVariousPositionsDTO)))
             .andExpect(status().isBadRequest());
 
@@ -168,7 +168,7 @@ public class ProductVariousPositionsResourceIT {
         // Get all the productVariousPositionsList
         restProductVariousPositionsMockMvc.perform(get("/api/product-various-positions?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productVariousPositions.getId().intValue())))
             .andExpect(jsonPath("$.[*].xAxis").value(hasItem(DEFAULT_X_AXIS)))
             .andExpect(jsonPath("$.[*].yAxis").value(hasItem(DEFAULT_Y_AXIS)))
@@ -184,7 +184,7 @@ public class ProductVariousPositionsResourceIT {
         // Get the productVariousPositions
         restProductVariousPositionsMockMvc.perform(get("/api/product-various-positions/{id}", productVariousPositions.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productVariousPositions.getId().intValue()))
             .andExpect(jsonPath("$.xAxis").value(DEFAULT_X_AXIS))
             .andExpect(jsonPath("$.yAxis").value(DEFAULT_Y_AXIS))
@@ -218,7 +218,7 @@ public class ProductVariousPositionsResourceIT {
         ProductVariousPositionsDTO productVariousPositionsDTO = productVariousPositionsMapper.toDto(updatedProductVariousPositions);
 
         restProductVariousPositionsMockMvc.perform(put("/api/product-various-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productVariousPositionsDTO)))
             .andExpect(status().isOk());
 
@@ -241,7 +241,7 @@ public class ProductVariousPositionsResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductVariousPositionsMockMvc.perform(put("/api/product-various-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productVariousPositionsDTO)))
             .andExpect(status().isBadRequest());
 
@@ -260,49 +260,11 @@ public class ProductVariousPositionsResourceIT {
 
         // Delete the productVariousPositions
         restProductVariousPositionsMockMvc.perform(delete("/api/product-various-positions/{id}", productVariousPositions.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<ProductVariousPositions> productVariousPositionsList = productVariousPositionsRepository.findAll();
         assertThat(productVariousPositionsList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ProductVariousPositions.class);
-        ProductVariousPositions productVariousPositions1 = new ProductVariousPositions();
-        productVariousPositions1.setId(1L);
-        ProductVariousPositions productVariousPositions2 = new ProductVariousPositions();
-        productVariousPositions2.setId(productVariousPositions1.getId());
-        assertThat(productVariousPositions1).isEqualTo(productVariousPositions2);
-        productVariousPositions2.setId(2L);
-        assertThat(productVariousPositions1).isNotEqualTo(productVariousPositions2);
-        productVariousPositions1.setId(null);
-        assertThat(productVariousPositions1).isNotEqualTo(productVariousPositions2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(ProductVariousPositionsDTO.class);
-        ProductVariousPositionsDTO productVariousPositionsDTO1 = new ProductVariousPositionsDTO();
-        productVariousPositionsDTO1.setId(1L);
-        ProductVariousPositionsDTO productVariousPositionsDTO2 = new ProductVariousPositionsDTO();
-        assertThat(productVariousPositionsDTO1).isNotEqualTo(productVariousPositionsDTO2);
-        productVariousPositionsDTO2.setId(productVariousPositionsDTO1.getId());
-        assertThat(productVariousPositionsDTO1).isEqualTo(productVariousPositionsDTO2);
-        productVariousPositionsDTO2.setId(2L);
-        assertThat(productVariousPositionsDTO1).isNotEqualTo(productVariousPositionsDTO2);
-        productVariousPositionsDTO1.setId(null);
-        assertThat(productVariousPositionsDTO1).isNotEqualTo(productVariousPositionsDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(productVariousPositionsMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(productVariousPositionsMapper.fromId(null)).isNull();
     }
 }

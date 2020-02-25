@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link AddressResource} REST controller.
+ * Integration tests for the {@link AddressResource} REST controller.
  */
 @SpringBootTest(classes = BarLevelServiceApp.class)
 public class AddressResourceIT {
@@ -140,7 +140,7 @@ public class AddressResourceIT {
         // Create the Address
         AddressDTO addressDTO = addressMapper.toDto(address);
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(addressDTO)))
             .andExpect(status().isCreated());
 
@@ -167,7 +167,7 @@ public class AddressResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAddressMockMvc.perform(post("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(addressDTO)))
             .andExpect(status().isBadRequest());
 
@@ -186,14 +186,14 @@ public class AddressResourceIT {
         // Get all the addressList
         restAddressMockMvc.perform(get("/api/addresses?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(address.getId().intValue())))
-            .andExpect(jsonPath("$.[*].streetAddress1").value(hasItem(DEFAULT_STREET_ADDRESS_1.toString())))
-            .andExpect(jsonPath("$.[*].streetAddress2").value(hasItem(DEFAULT_STREET_ADDRESS_2.toString())))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())))
-            .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE.toString())));
+            .andExpect(jsonPath("$.[*].streetAddress1").value(hasItem(DEFAULT_STREET_ADDRESS_1)))
+            .andExpect(jsonPath("$.[*].streetAddress2").value(hasItem(DEFAULT_STREET_ADDRESS_2)))
+            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE)))
+            .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)))
+            .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)));
     }
     
     @Test
@@ -205,14 +205,14 @@ public class AddressResourceIT {
         // Get the address
         restAddressMockMvc.perform(get("/api/addresses/{id}", address.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(address.getId().intValue()))
-            .andExpect(jsonPath("$.streetAddress1").value(DEFAULT_STREET_ADDRESS_1.toString()))
-            .andExpect(jsonPath("$.streetAddress2").value(DEFAULT_STREET_ADDRESS_2.toString()))
-            .andExpect(jsonPath("$.city").value(DEFAULT_CITY.toString()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
-            .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY.toString()))
-            .andExpect(jsonPath("$.zipCode").value(DEFAULT_ZIP_CODE.toString()));
+            .andExpect(jsonPath("$.streetAddress1").value(DEFAULT_STREET_ADDRESS_1))
+            .andExpect(jsonPath("$.streetAddress2").value(DEFAULT_STREET_ADDRESS_2))
+            .andExpect(jsonPath("$.city").value(DEFAULT_CITY))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE))
+            .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY))
+            .andExpect(jsonPath("$.zipCode").value(DEFAULT_ZIP_CODE));
     }
 
     @Test
@@ -245,7 +245,7 @@ public class AddressResourceIT {
         AddressDTO addressDTO = addressMapper.toDto(updatedAddress);
 
         restAddressMockMvc.perform(put("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(addressDTO)))
             .andExpect(status().isOk());
 
@@ -271,7 +271,7 @@ public class AddressResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAddressMockMvc.perform(put("/api/addresses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(addressDTO)))
             .andExpect(status().isBadRequest());
 
@@ -290,49 +290,11 @@ public class AddressResourceIT {
 
         // Delete the address
         restAddressMockMvc.perform(delete("/api/addresses/{id}", address.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        // Validate the database is empty
+        // Validate the database contains one less item
         List<Address> addressList = addressRepository.findAll();
         assertThat(addressList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Address.class);
-        Address address1 = new Address();
-        address1.setId(1L);
-        Address address2 = new Address();
-        address2.setId(address1.getId());
-        assertThat(address1).isEqualTo(address2);
-        address2.setId(2L);
-        assertThat(address1).isNotEqualTo(address2);
-        address1.setId(null);
-        assertThat(address1).isNotEqualTo(address2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(AddressDTO.class);
-        AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setId(1L);
-        AddressDTO addressDTO2 = new AddressDTO();
-        assertThat(addressDTO1).isNotEqualTo(addressDTO2);
-        addressDTO2.setId(addressDTO1.getId());
-        assertThat(addressDTO1).isEqualTo(addressDTO2);
-        addressDTO2.setId(2L);
-        assertThat(addressDTO1).isNotEqualTo(addressDTO2);
-        addressDTO1.setId(null);
-        assertThat(addressDTO1).isNotEqualTo(addressDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(addressMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(addressMapper.fromId(null)).isNull();
     }
 }

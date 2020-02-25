@@ -4,7 +4,8 @@
       "home": {
         "title": "Inventories",
         "createLabel": "Créer un nouveau Inventory",
-        "createOrEditLabel": "Créer ou éditer un Inventory"
+        "createOrEditLabel": "Créer ou éditer un Inventory",
+        "notFound": "Aucun Inventory trouvé"
       },
       "created": "Un nouveau Inventory a été créé avec l'identifiant {{ param }}",
       "updated": "Le Inventory avec l'identifiant {{ param }} a été mis à jour",

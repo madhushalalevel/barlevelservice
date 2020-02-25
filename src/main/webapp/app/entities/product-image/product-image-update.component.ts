@@ -1,24 +1,25 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { map } from 'rxjs/operators';
+import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+
 import { IProductImage, ProductImage } from 'app/shared/model/product-image.model';
 import { ProductImageService } from './product-image.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
 import { IProduct } from 'app/shared/model/product.model';
-import { ProductService } from 'app/entities/product';
+import { ProductService } from 'app/entities/product/product.service';
 
 @Component({
   selector: 'jhi-product-image-update',
   templateUrl: './product-image-update.component.html'
 })
 export class ProductImageUpdateComponent implements OnInit {
-  productImage: IProductImage;
-  isSaving: boolean;
-
-  products: IProduct[];
+  isSaving = false;
+  products: IProduct[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -30,7 +31,7 @@ export class ProductImageUpdateComponent implements OnInit {
 
   constructor(
     protected dataUtils: JhiDataUtils,
-    protected jhiAlertService: JhiAlertService,
+    protected eventManager: JhiEventManager,
     protected productImageService: ProductImageService,
     protected productService: ProductService,
     protected elementRef: ElementRef,
@@ -38,40 +39,35 @@ export class ProductImageUpdateComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ productImage }) => {
       this.updateForm(productImage);
-      this.productImage = productImage;
-    });
-    this.productService
-      .query({ filter: 'productimage-is-null' })
-      .pipe(
-        filter((mayBeOk: HttpResponse<IProduct[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IProduct[]>) => response.body)
-      )
-      .subscribe(
-        (res: IProduct[]) => {
-          if (!this.productImage.productId) {
-            this.products = res;
+
+      this.productService
+        .query({ filter: 'productimage-is-null' })
+        .pipe(
+          map((res: HttpResponse<IProduct[]>) => {
+            return res.body || [];
+          })
+        )
+        .subscribe((resBody: IProduct[]) => {
+          if (!productImage.productId) {
+            this.products = resBody;
           } else {
             this.productService
-              .find(this.productImage.productId)
+              .find(productImage.productId)
               .pipe(
-                filter((subResMayBeOk: HttpResponse<IProduct>) => subResMayBeOk.ok),
-                map((subResponse: HttpResponse<IProduct>) => subResponse.body)
+                map((subRes: HttpResponse<IProduct>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
               )
-              .subscribe(
-                (subRes: IProduct) => (this.products = [subRes].concat(res)),
-                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-              );
+              .subscribe((concatRes: IProduct[]) => (this.products = concatRes));
           }
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+        });
+    });
   }
 
-  updateForm(productImage: IProductImage) {
+  updateForm(productImage: IProductImage): void {
     this.editForm.patchValue({
       id: productImage.id,
       imageUrl: productImage.imageUrl,
@@ -81,39 +77,23 @@ export class ProductImageUpdateComponent implements OnInit {
     });
   }
 
-  byteSize(field) {
-    return this.dataUtils.byteSize(field);
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
   }
 
-  openFile(contentType, field) {
-    return this.dataUtils.openFile(contentType, field);
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
   }
 
-  setFileData(event, field: string, isImage) {
-    return new Promise((resolve, reject) => {
-      if (event && event.target && event.target.files && event.target.files[0]) {
-        const file = event.target.files[0];
-        if (isImage && !/^image\//.test(file.type)) {
-          reject(`File was expected to be an image but was found to be ${file.type}`);
-        } else {
-          const filedContentType: string = field + 'ContentType';
-          this.dataUtils.toBase64(file, base64Data => {
-            this.editForm.patchValue({
-              [field]: base64Data,
-              [filedContentType]: file.type
-            });
-          });
-        }
-      } else {
-        reject(`Base64 data was not set as file could not be extracted from passed parameter: ${event}`);
-      }
-    }).then(
-      () => console.log('blob added'), // sucess
-      this.onError
-    );
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
+      this.eventManager.broadcast(
+        new JhiEventWithContent<AlertError>('barLevelServiceApp.error', { ...err, key: 'error.file.' + err.key })
+      );
+    });
   }
 
-  clearInputImage(field: string, fieldContentType: string, idInput: string) {
+  clearInputImage(field: string, fieldContentType: string, idInput: string): void {
     this.editForm.patchValue({
       [field]: null,
       [fieldContentType]: null
@@ -123,11 +103,11 @@ export class ProductImageUpdateComponent implements OnInit {
     }
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const productImage = this.createFromForm();
     if (productImage.id !== undefined) {
@@ -138,34 +118,33 @@ export class ProductImageUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IProductImage {
-    const entity = {
+    return {
       ...new ProductImage(),
-      id: this.editForm.get(['id']).value,
-      imageUrl: this.editForm.get(['imageUrl']).value,
-      imageContentType: this.editForm.get(['imageContentType']).value,
-      image: this.editForm.get(['image']).value,
-      productId: this.editForm.get(['productId']).value
+      id: this.editForm.get(['id'])!.value,
+      imageUrl: this.editForm.get(['imageUrl'])!.value,
+      imageContentType: this.editForm.get(['imageContentType'])!.value,
+      image: this.editForm.get(['image'])!.value,
+      productId: this.editForm.get(['productId'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProductImage>>) {
-    result.subscribe((res: HttpResponse<IProductImage>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProductImage>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackProductById(index: number, item: IProduct) {
+  trackById(index: number, item: IProduct): any {
     return item.id;
   }
 }

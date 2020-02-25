@@ -1,4 +1,5 @@
 package com.mycompany.myapp.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -96,8 +97,8 @@ public class EmployeeDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", phoneNumber=" + getPhoneNumber() +
             ", email='" + getEmail() + "'" +
-            ", company=" + getCompanyId() +
-            ", address=" + getAddressId() +
+            ", companyId=" + getCompanyId() +
+            ", addressId=" + getAddressId() +
             "}";
     }
 }
