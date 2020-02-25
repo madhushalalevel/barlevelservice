@@ -1,0 +1,72 @@
+{
+    "name": "Inventory",
+    "fields": [
+        {
+            "fieldName": "productID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "tennentID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "branchID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "zoneID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "shelfID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "currentStockCount",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "inventory",
+            "relationshipName": "employee"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "company",
+            "otherEntityRelationshipName": "inventory",
+            "relationshipName": "employee"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "branch",
+            "otherEntityRelationshipName": "inventory",
+            "relationshipName": "employee"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "zone",
+            "otherEntityRelationshipName": "inventory",
+            "relationshipName": "employee"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "shelf",
+            "otherEntityRelationshipName": "inventory",
+            "relationshipName": "employee"
+        }
+    ],
+    "changelogDate": "20200225134419",
+    "entityTableName": "inventory",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "barLevelService"
+    ]
+}

@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="inventoryStock">
+            <h2><span jhiTranslate="barLevelServiceApp.inventoryStock.detail.title">Inventory Stock</span> {{inventoryStock.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="barLevelServiceApp.inventoryStock.inventoryId">Inventory Id</span></dt>
+                <dd>
+                    <span>{{inventoryStock.inventoryId}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.inventoryStock.productID">Product ID</span></dt>
+                <dd>
+                    <span>{{inventoryStock.productID}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.inventoryStock.stockCount">Stock Count</span></dt>
+                <dd>
+                    <span>{{inventoryStock.stockCount}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.inventoryStock.datetime">Datetime</span></dt>
+                <dd>
+                    <span>{{inventoryStock.datetime}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/inventory-stock', inventoryStock.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

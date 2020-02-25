@@ -1,0 +1,33 @@
+{
+    "name": "InventoryStock",
+    "fields": [
+        {
+            "fieldName": "inventoryId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "productID",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "stockCount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "datetime",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200225134420",
+    "entityTableName": "inventory_stock",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "barLevelService"
+    ]
+}

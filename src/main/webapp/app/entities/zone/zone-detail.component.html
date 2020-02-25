@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="zone">
+            <h2><span jhiTranslate="barLevelServiceApp.zone.detail.title">Zone</span> {{zone.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="barLevelServiceApp.zone.zoneID">Zone ID</span></dt>
+                <dd>
+                    <span>{{zone.zoneID}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.zone.name">Name</span></dt>
+                <dd>
+                    <span>{{zone.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.zone.discription">Discription</span></dt>
+                <dd>
+                    <span>{{zone.discription}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.zone.tenantId">Tenant Id</span></dt>
+                <dd>
+                    <span>{{zone.tenantId}}</span>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.zone.branch">Branch</span></dt>
+                <dd>
+                    <div *ngIf="zone.branchId">
+                        <a [routerLink]="['/branch', zone.branchId, 'view']">{{zone.branchName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="barLevelServiceApp.zone.inventory">Inventory</span></dt>
+                <dd>
+                    <div *ngIf="zone.inventoryId">
+                        <a [routerLink]="['/inventory', zone.inventoryId, 'view']">{{zone.inventoryId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/zone', zone.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

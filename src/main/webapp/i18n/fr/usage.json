@@ -1,0 +1,27 @@
+{
+  "barLevelServiceApp": {
+    "usage": {
+      "home": {
+        "title": "Usages",
+        "createLabel": "Créer un nouveau Usage",
+        "createOrEditLabel": "Créer ou éditer un Usage"
+      },
+      "created": "Un nouveau Usage a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Usage avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Usage avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Usage {{ id }} ?"
+      },
+      "detail": {
+        "title": "Usage"
+      },
+      "usageId": "Usage Id",
+      "productID": "Product ID",
+      "branchID": "Branch ID",
+      "zoneID": "Zone ID",
+      "shelfID": "Shelf ID",
+      "usage": "Usage",
+      "datetime": "Datetime"
+    }
+  }
+}

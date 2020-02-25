@@ -1,0 +1,27 @@
+{
+  "barLevelServiceApp": {
+    "usage": {
+      "home": {
+        "title": "Usages",
+        "createLabel": "Create a new Usage",
+        "createOrEditLabel": "Create or edit a Usage"
+      },
+      "created": "A new Usage is created with identifier {{ param }}",
+      "updated": "A Usage is updated with identifier {{ param }}",
+      "deleted": "A Usage is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Usage {{ id }}?"
+      },
+      "detail": {
+        "title": "Usage"
+      },
+      "usageId": "Usage Id",
+      "productID": "Product ID",
+      "branchID": "Branch ID",
+      "zoneID": "Zone ID",
+      "shelfID": "Shelf ID",
+      "usage": "Usage",
+      "datetime": "Datetime"
+    }
+  }
+}
