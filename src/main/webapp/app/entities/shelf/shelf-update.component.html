@@ -1,56 +1,50 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-shelf-heading" jhiTranslate="barLevelServiceApp.shelf.home.createOrEditLabel">Create or edit a Shelf</h2>
+            <h2 id="jhi-shelf-heading" jhiTranslate="barlevelserviceApp.shelf.home.createOrEditLabel">Create or edit a Shelf</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!shelf.id">
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.shelf.shelfID" for="field_shelfID">Shelf ID</label>
-                    <input type="number" class="form-control" name="shelfID" id="field_shelfID"
-                           formControlName="shelfID"/>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.shelf.name" for="field_name">Name</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.shelf.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.shelf.discription" for="field_discription">Discription</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.shelf.discription" for="field_discription">Discription</label>
                     <input type="text" class="form-control" name="discription" id="field_discription"
                            formControlName="discription"/>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.shelf.tenantId" for="field_tenantId">Tenant Id</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.shelf.tenantId" for="field_tenantId">Tenant Id</label>
                     <input type="text" class="form-control" name="tenantId" id="field_tenantId"
                            formControlName="tenantId"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.shelf.zone" for="field_zone">Zone</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.shelf.zone" for="field_zone">Zone</label>
                     <select class="form-control" id="field_zone" name="zone" formControlName="zoneId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="zoneOption.id" *ngFor="let zoneOption of zones; trackBy: trackZoneById">{{zoneOption.name}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.shelf.inventory" for="field_inventory">Inventory</label>
-                    <select class="form-control" id="field_inventory" name="inventory" formControlName="inventoryId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="inventoryOption.id" *ngFor="let inventoryOption of inventories; trackBy: trackInventoryById">{{inventoryOption.id}}</option>
+                        <option [ngValue]="zoneOption.id" *ngFor="let zoneOption of zones; trackBy: trackById">{{ zoneOption.name }}</option>
                     </select>
                 </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

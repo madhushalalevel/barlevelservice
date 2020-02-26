@@ -1,24 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
+
 import { IProductVariousPositions, ProductVariousPositions } from 'app/shared/model/product-various-positions.model';
 import { ProductVariousPositionsService } from './product-various-positions.service';
 import { IProduct } from 'app/shared/model/product.model';
-import { ProductService } from 'app/entities/product';
+import { ProductService } from 'app/entities/product/product.service';
 
 @Component({
   selector: 'jhi-product-various-positions-update',
   templateUrl: './product-various-positions-update.component.html'
 })
 export class ProductVariousPositionsUpdateComponent implements OnInit {
-  productVariousPositions: IProductVariousPositions;
-  isSaving: boolean;
-
-  products: IProduct[];
+  isSaving = false;
+  products: IProduct[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -29,29 +27,21 @@ export class ProductVariousPositionsUpdateComponent implements OnInit {
   });
 
   constructor(
-    protected jhiAlertService: JhiAlertService,
     protected productVariousPositionsService: ProductVariousPositionsService,
     protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ productVariousPositions }) => {
       this.updateForm(productVariousPositions);
-      this.productVariousPositions = productVariousPositions;
+
+      this.productService.query().subscribe((res: HttpResponse<IProduct[]>) => (this.products = res.body || []));
     });
-    this.productService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IProduct[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IProduct[]>) => response.body)
-      )
-      .subscribe((res: IProduct[]) => (this.products = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
-  updateForm(productVariousPositions: IProductVariousPositions) {
+  updateForm(productVariousPositions: IProductVariousPositions): void {
     this.editForm.patchValue({
       id: productVariousPositions.id,
       xAxis: productVariousPositions.xAxis,
@@ -61,11 +51,11 @@ export class ProductVariousPositionsUpdateComponent implements OnInit {
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const productVariousPositions = this.createFromForm();
     if (productVariousPositions.id !== undefined) {
@@ -76,34 +66,33 @@ export class ProductVariousPositionsUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IProductVariousPositions {
-    const entity = {
+    return {
       ...new ProductVariousPositions(),
-      id: this.editForm.get(['id']).value,
-      xAxis: this.editForm.get(['xAxis']).value,
-      yAxis: this.editForm.get(['yAxis']).value,
-      order: this.editForm.get(['order']).value,
-      productId: this.editForm.get(['productId']).value
+      id: this.editForm.get(['id'])!.value,
+      xAxis: this.editForm.get(['xAxis'])!.value,
+      yAxis: this.editForm.get(['yAxis'])!.value,
+      order: this.editForm.get(['order'])!.value,
+      productId: this.editForm.get(['productId'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProductVariousPositions>>) {
-    result.subscribe((res: HttpResponse<IProductVariousPositions>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProductVariousPositions>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackProductById(index: number, item: IProduct) {
+  trackById(index: number, item: IProduct): any {
     return item.id;
   }
 }

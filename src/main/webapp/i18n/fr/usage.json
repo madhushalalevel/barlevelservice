@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "usage": {
       "home": {
         "title": "Usages",
         "createLabel": "Créer un nouveau Usage",
-        "createOrEditLabel": "Créer ou éditer un Usage"
+        "createOrEditLabel": "Créer ou éditer un Usage",
+        "notFound": "Aucun Usage trouvé"
       },
       "created": "Un nouveau Usage a été créé avec l'identifiant {{ param }}",
       "updated": "Le Usage avec l'identifiant {{ param }} a été mis à jour",

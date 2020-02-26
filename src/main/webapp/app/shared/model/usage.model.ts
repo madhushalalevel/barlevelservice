@@ -1,3 +1,5 @@
+import { Moment } from 'moment';
+
 export interface IUsage {
   id?: number;
   usageId?: number;
@@ -6,7 +8,7 @@ export interface IUsage {
   zoneID?: number;
   shelfID?: number;
   usage?: number;
-  datetime?: number;
+  datetime?: Moment;
 }
 
 export class Usage implements IUsage {
@@ -18,6 +20,6 @@ export class Usage implements IUsage {
     public zoneID?: number,
     public shelfID?: number,
     public usage?: number,
-    public datetime?: number
+    public datetime?: Moment
   ) {}
 }

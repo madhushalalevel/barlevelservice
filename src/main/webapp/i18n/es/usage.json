@@ -1,0 +1,28 @@
+{
+  "barlevelserviceApp": {
+    "usage": {
+      "home": {
+        "title": "Usages",
+        "createLabel": "Crear nuevo Usage",
+        "createOrEditLabel": "Crear o editar Usage",
+        "notFound": "Ningún Usages encontrado"
+      },
+      "created": "Un nuevo Usage ha sido creado con el identificador {{ param }}",
+      "updated": "Un Usage ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Usage ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Usage {{ id }}?"
+      },
+      "detail": {
+        "title": "Usage"
+      },
+      "usageId": "Usage Id",
+      "productID": "Product ID",
+      "branchID": "Branch ID",
+      "zoneID": "Zone ID",
+      "shelfID": "Shelf ID",
+      "usage": "Usage",
+      "datetime": "Datetime"
+    }
+  }
+}

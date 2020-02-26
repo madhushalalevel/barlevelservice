@@ -3,10 +3,10 @@
  * @author A true hipster
  */
 
-
+/*
  application {
   config {
-    baseName barLevelService
+    baseName barlevelservice
     applicationType monolith
     buildTool maven
     cacheProvider hazelcast
@@ -18,14 +18,13 @@
   }
   entities *
 }
-
+*/
  enum BarCodeType {
   PUC,
   EAN
 }
 entity Product {
     /** fieldName */
-    productID Integer
     name String
     barCode String
     quantity Integer
@@ -46,21 +45,18 @@ entity Company {
 }
 
 entity Branch {
-    branchID Integer
     name String
     discription  String
     tenantId String
 }
 
 entity Zone {
-    zoneID Integer
     name String
     discription  String
     tenantId String
 }
 
 entity Shelf {
-    shelfID Integer
     name String
     discription  String
     tenantId String
@@ -74,18 +70,13 @@ entity Employee {
 }
 
 entity Inventory{
-    productID Integer
     tennentID Integer
-    branchID  Integer
-    zoneID Integer
-    shelfID Integer
     currentStockCount Integer
   } 
+
  entity InventoryStock{
-   inventoryId Integer
-   productID Integer 
    stockCount Integer
-   datetime Long
+   datetime ZonedDateTime
   } 
   
   entity Usage{
@@ -95,7 +86,7 @@ entity Inventory{
     zoneID Integer
     shelfID Integer
     usage  Integer 
-    datetime Long
+    datetime ZonedDateTime
   } 
   
   
@@ -133,6 +124,8 @@ relationship OneToOne{
     ProductImage to Product
     Branch to Address
     Employee to Address
+    Inventory to Product
+    InventoryStock to Inventory
 }
 /**
  * One to many relationship.
@@ -140,19 +133,27 @@ relationship OneToOne{
 relationship OneToMany {
     Product to ProductPositions{product(name)}
     Company{employee(name)} to Employee
-    Inventory{employee(name)} to Product
-    Inventory{employee(name)} to Company
-    Inventory{employee(name)} to Branch
-    Inventory{employee(name)} to Zone
-    Inventory{employee(name)} to Shelf
+    Branch{inventory} to Inventory
+    Zone{inventory} to Inventory
+    Shelf{inventory} to Inventory
 }
 relationship ManyToOne {
     Branch{company(name)} to Company
     Zone{branch(name)} to Branch
     Shelf{zone(name)} to Zone
     ProductVariousPositions{product(name)} to Product
-    
+
 }
+
+/*
+deployment {
+  deploymentType kubernetes
+  dockerRepositoryName "kvenkatramreddy"
+  serviceDiscoveryType no
+  appsFolders [barlevelservice]
+  
+}
+*/
 
 dto * with mapstruct
 service * with serviceClass

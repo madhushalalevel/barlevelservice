@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
-import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { Branch } from 'app/shared/model/branch.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IBranch, Branch } from 'app/shared/model/branch.model';
 import { BranchService } from './branch.service';
 import { BranchComponent } from './branch.component';
 import { BranchDetailComponent } from './branch-detail.component';
 import { BranchUpdateComponent } from './branch-update.component';
-import { BranchDeletePopupComponent } from './branch-delete-dialog.component';
-import { IBranch } from 'app/shared/model/branch.model';
 
 @Injectable({ providedIn: 'root' })
 export class BranchResolve implements Resolve<IBranch> {
-  constructor(private service: BranchService) {}
+  constructor(private service: BranchService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IBranch> {
-    const id = route.params['id'] ? route.params['id'] : null;
+  resolve(route: ActivatedRouteSnapshot): Observable<IBranch> | Observable<never> {
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<Branch>) => response.ok),
-        map((branch: HttpResponse<Branch>) => branch.body)
+        flatMap((branch: HttpResponse<Branch>) => {
+          if (branch.body) {
+            return of(branch.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new Branch());
@@ -39,7 +44,7 @@ export const branchRoute: Routes = [
     data: {
       authorities: ['ROLE_USER'],
       defaultSort: 'id,asc',
-      pageTitle: 'barLevelServiceApp.branch.home.title'
+      pageTitle: 'barlevelserviceApp.branch.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -51,7 +56,7 @@ export const branchRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.branch.home.title'
+      pageTitle: 'barlevelserviceApp.branch.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -63,7 +68,7 @@ export const branchRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.branch.home.title'
+      pageTitle: 'barlevelserviceApp.branch.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -75,24 +80,8 @@ export const branchRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.branch.home.title'
+      pageTitle: 'barlevelserviceApp.branch.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const branchPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: BranchDeletePopupComponent,
-    resolve: {
-      branch: BranchResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.branch.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

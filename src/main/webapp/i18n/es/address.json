@@ -1,0 +1,29 @@
+{
+  "barlevelserviceApp": {
+    "address": {
+      "home": {
+        "title": "Addresses",
+        "createLabel": "Crear nuevo Address",
+        "createOrEditLabel": "Crear o editar Address",
+        "notFound": "Ningún Addresses encontrado"
+      },
+      "created": "Un nuevo Address ha sido creado con el identificador {{ param }}",
+      "updated": "Un Address ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Address ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Address {{ id }}?"
+      },
+      "detail": {
+        "title": "Address"
+      },
+      "streetAddress1": "Street Address 1",
+      "streetAddress2": "Street Address 2",
+      "city": "City",
+      "state": "State",
+      "country": "Country",
+      "zipCode": "Zip Code",
+      "branch": "Branch",
+      "employee": "Employee"
+    }
+  }
+}

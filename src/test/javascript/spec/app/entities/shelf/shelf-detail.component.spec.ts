@@ -1,9 +1,8 @@
-/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-import { BarLevelServiceTestModule } from '../../../test.module';
+import { BarlevelserviceTestModule } from '../../../test.module';
 import { ShelfDetailComponent } from 'app/entities/shelf/shelf-detail.component';
 import { Shelf } from 'app/shared/model/shelf.model';
 
@@ -15,7 +14,7 @@ describe('Component Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [BarLevelServiceTestModule],
+        imports: [BarlevelserviceTestModule],
         declarations: [ShelfDetailComponent],
         providers: [{ provide: ActivatedRoute, useValue: route }]
       })
@@ -26,9 +25,7 @@ describe('Component Tests', () => {
     });
 
     describe('OnInit', () => {
-      it('Should call load all on init', () => {
-        // GIVEN
-
+      it('Should load shelf on init', () => {
         // WHEN
         comp.ngOnInit();
 

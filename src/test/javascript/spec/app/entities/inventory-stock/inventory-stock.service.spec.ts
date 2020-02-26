@@ -1,9 +1,7 @@
-/* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { InventoryStockService } from 'app/entities/inventory-stock/inventory-stock.service';
 import { IInventoryStock, InventoryStock } from 'app/shared/model/inventory-stock.model';
 
@@ -13,96 +11,110 @@ describe('Service Tests', () => {
     let service: InventoryStockService;
     let httpMock: HttpTestingController;
     let elemDefault: IInventoryStock;
-    let expectedResult;
+    let expectedResult: IInventoryStock | IInventoryStock[] | boolean | null;
+    let currentDate: moment.Moment;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
       });
-      expectedResult = {};
+      expectedResult = null;
       injector = getTestBed();
       service = injector.get(InventoryStockService);
       httpMock = injector.get(HttpTestingController);
+      currentDate = moment();
 
-      elemDefault = new InventoryStock(0, 0, 0, 0, 0);
+      elemDefault = new InventoryStock(0, 0, currentDate);
     });
 
     describe('Service methods', () => {
-      it('should find an element', async () => {
-        const returnedFromService = Object.assign({}, elemDefault);
-        service
-          .find(123)
-          .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+      it('should find an element', () => {
+        const returnedFromService = Object.assign(
+          {
+            datetime: currentDate.format(DATE_TIME_FORMAT)
+          },
+          elemDefault
+        );
+
+        service.find(123).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: elemDefault });
+        expect(expectedResult).toMatchObject(elemDefault);
       });
 
-      it('should create a InventoryStock', async () => {
+      it('should create a InventoryStock', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
+            datetime: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
-        service
-          .create(new InventoryStock(null))
-          .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+
+        const expected = Object.assign(
+          {
+            datetime: currentDate
+          },
+          returnedFromService
+        );
+
+        service.create(new InventoryStock()).subscribe(resp => (expectedResult = resp.body));
+
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
-      it('should update a InventoryStock', async () => {
+      it('should update a InventoryStock', () => {
         const returnedFromService = Object.assign(
           {
-            inventoryId: 1,
-            productID: 1,
             stockCount: 1,
-            datetime: 1
+            datetime: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
-        service
-          .update(expected)
-          .pipe(take(1))
-          .subscribe(resp => (expectedResult = resp));
+        const expected = Object.assign(
+          {
+            datetime: currentDate
+          },
+          returnedFromService
+        );
+
+        service.update(expected).subscribe(resp => (expectedResult = resp.body));
+
         const req = httpMock.expectOne({ method: 'PUT' });
         req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject({ body: expected });
+        expect(expectedResult).toMatchObject(expected);
       });
 
-      it('should return a list of InventoryStock', async () => {
+      it('should return a list of InventoryStock', () => {
         const returnedFromService = Object.assign(
           {
-            inventoryId: 1,
-            productID: 1,
             stockCount: 1,
-            datetime: 1
+            datetime: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
-        service
-          .query(expected)
-          .pipe(
-            take(1),
-            map(resp => resp.body)
-          )
-          .subscribe(body => (expectedResult = body));
+
+        const expected = Object.assign(
+          {
+            datetime: currentDate
+          },
+          returnedFromService
+        );
+
+        service.query().subscribe(resp => (expectedResult = resp.body));
+
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush([returnedFromService]);
         httpMock.verify();
         expect(expectedResult).toContainEqual(expected);
       });
 
-      it('should delete a InventoryStock', async () => {
-        const rxPromise = service.delete(123).subscribe(resp => (expectedResult = resp.ok));
+      it('should delete a InventoryStock', () => {
+        service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
         const req = httpMock.expectOne({ method: 'DELETE' });
         req.flush({ status: 200 });

@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "company": {
       "home": {
         "title": "Companies",
         "createLabel": "Créer un nouveau Company",
-        "createOrEditLabel": "Créer ou éditer un Company"
+        "createOrEditLabel": "Créer ou éditer un Company",
+        "notFound": "Aucun Company trouvé"
       },
       "created": "Un nouveau Company a été créé avec l'identifiant {{ param }}",
       "updated": "Le Company avec l'identifiant {{ param }} a été mis à jour",
@@ -18,8 +19,7 @@
       "name": "Name",
       "discription": "Discription",
       "tenantId": "Tenant Id",
-      "employee": "Employee",
-      "inventory": "Inventory"
+      "employee": "Employee"
     }
   }
 }

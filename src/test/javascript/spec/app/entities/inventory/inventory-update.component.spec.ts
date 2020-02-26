@@ -1,10 +1,9 @@
-/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
-import { BarLevelServiceTestModule } from '../../../test.module';
+import { BarlevelserviceTestModule } from '../../../test.module';
 import { InventoryUpdateComponent } from 'app/entities/inventory/inventory-update.component';
 import { InventoryService } from 'app/entities/inventory/inventory.service';
 import { Inventory } from 'app/shared/model/inventory.model';
@@ -17,7 +16,7 @@ describe('Component Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [BarLevelServiceTestModule],
+        imports: [BarlevelserviceTestModule],
         declarations: [InventoryUpdateComponent],
         providers: [FormBuilder]
       })

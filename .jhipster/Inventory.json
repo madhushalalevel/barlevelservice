@@ -2,23 +2,7 @@
     "name": "Inventory",
     "fields": [
         {
-            "fieldName": "productID",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "tennentID",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "branchID",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "zoneID",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "shelfID",
             "fieldType": "Integer"
         },
         {
@@ -28,45 +12,50 @@
     ],
     "relationships": [
         {
-            "relationshipType": "one-to-many",
+            "relationshipType": "one-to-one",
             "otherEntityName": "product",
             "otherEntityRelationshipName": "inventory",
-            "relationshipName": "employee"
+            "relationshipName": "product",
+            "otherEntityField": "id",
+            "ownerSide": true
         },
         {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "company",
+            "relationshipType": "one-to-one",
+            "otherEntityName": "inventoryStock",
             "otherEntityRelationshipName": "inventory",
-            "relationshipName": "employee"
+            "relationshipName": "inventoryStock",
+            "ownerSide": false
         },
         {
-            "relationshipType": "one-to-many",
+            "relationshipType": "many-to-one",
             "otherEntityName": "branch",
             "otherEntityRelationshipName": "inventory",
-            "relationshipName": "employee"
+            "relationshipName": "branch",
+            "otherEntityField": "id"
         },
         {
-            "relationshipType": "one-to-many",
+            "relationshipType": "many-to-one",
             "otherEntityName": "zone",
             "otherEntityRelationshipName": "inventory",
-            "relationshipName": "employee"
+            "relationshipName": "zone",
+            "otherEntityField": "id"
         },
         {
-            "relationshipType": "one-to-many",
+            "relationshipType": "many-to-one",
             "otherEntityName": "shelf",
             "otherEntityRelationshipName": "inventory",
-            "relationshipName": "employee"
+            "relationshipName": "shelf",
+            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20200225134419",
+    "changelogDate": "20200226045700",
     "entityTableName": "inventory",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

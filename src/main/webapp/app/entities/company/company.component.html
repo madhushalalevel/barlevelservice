@@ -1,72 +1,75 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="barLevelServiceApp.company.home.title">Companies</span>
+        <span jhiTranslate="barlevelserviceApp.company.home.title">Companies</span>
+
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-company" [routerLink]="['/company/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="barLevelServiceApp.company.home.createLabel">
-            Create new Company
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="barlevelserviceApp.company.home.createLabel">
+            Create a new Company
             </span>
         </button>
     </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
-    <br/>
-    <div class="table-responsive" *ngIf="companies">
-        <table class="table table-striped">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="companies?.length === 0">
+        <span jhiTranslate="barlevelserviceApp.company.home.notFound">No companies found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="companies?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="name"><span jhiTranslate="barLevelServiceApp.company.name">Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="discription"><span jhiTranslate="barLevelServiceApp.company.discription">Discription</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="tenantId"><span jhiTranslate="barLevelServiceApp.company.tenantId">Tenant Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="inventoryId"><span jhiTranslate="barLevelServiceApp.company.inventory">Inventory</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
-            </tr>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="name"><span jhiTranslate="barlevelserviceApp.company.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="discription"><span jhiTranslate="barlevelserviceApp.company.discription">Discription</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="tenantId"><span jhiTranslate="barlevelserviceApp.company.tenantId">Tenant Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let company of companies ;trackBy: trackId">
-                <td><a [routerLink]="['/company', company.id, 'view' ]">{{company.id}}</a></td>
-                <td>{{company.name}}</td>
-                <td>{{company.discription}}</td>
-                <td>{{company.tenantId}}</td>
-                <td>
-                    <div *ngIf="company.inventoryId">
-                        <a [routerLink]="['../inventory', company.inventoryId , 'view' ]" >{{company.inventoryId}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button type="submit"
-                                [routerLink]="['/company', company.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/company', company.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', 'company', { outlets: { popup: company.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let company of companies ;trackBy: trackId">
+                    <td><a [routerLink]="['/company', company.id, 'view']">{{ company.id }}</a></td>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.discription }}</td>
+                    <td>{{ company.tenantId }}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/company', company.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/company', company.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(company)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
-    <div *ngIf="companies && companies.length">
+
+    <div *ngIf="companies?.length > 0">
         <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
+
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>

@@ -1,32 +1,35 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="employee">
-            <h2><span jhiTranslate="barLevelServiceApp.employee.detail.title">Employee</span> {{employee.id}}</h2>
+            <h2><span jhiTranslate="barlevelserviceApp.employee.detail.title">Employee</span> {{ employee.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="barLevelServiceApp.employee.name">Name</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.employee.name">Name</span></dt>
                 <dd>
-                    <span>{{employee.name}}</span>
+                    <span>{{ employee.name }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.employee.phoneNumber">Phone Number</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.employee.phoneNumber">Phone Number</span></dt>
                 <dd>
-                    <span>{{employee.phoneNumber}}</span>
+                    <span>{{ employee.phoneNumber }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.employee.email">Email</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.employee.email">Email</span></dt>
                 <dd>
-                    <span>{{employee.email}}</span>
+                    <span>{{ employee.email }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.employee.company">Company</span></dt>
-                <dd>
-                    <div *ngIf="employee.companyId">
-                        <a [routerLink]="['/company', employee.companyId, 'view']">{{employee.companyId}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.employee.address">Address</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.employee.address">Address</span></dt>
                 <dd>
                     <div *ngIf="employee.addressId">
-                        <a [routerLink]="['/address', employee.addressId, 'view']">{{employee.addressId}}</a>
+                        <a [routerLink]="['/address', employee.addressId, 'view']">{{ employee.addressId }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="barlevelserviceApp.employee.company">Company</span></dt>
+                <dd>
+                    <div *ngIf="employee.companyId">
+                        <a [routerLink]="['/company', employee.companyId, 'view']">{{ employee.companyId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -34,13 +37,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/employee', employee.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

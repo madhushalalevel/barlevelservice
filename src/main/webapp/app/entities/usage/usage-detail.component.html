@@ -1,50 +1,53 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="usage">
-            <h2><span jhiTranslate="barLevelServiceApp.usage.detail.title">Usage</span> {{usage.id}}</h2>
+            <h2><span jhiTranslate="barlevelserviceApp.usage.detail.title">Usage</span> {{ usage.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="barLevelServiceApp.usage.usageId">Usage Id</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.usage.usageId">Usage Id</span></dt>
                 <dd>
-                    <span>{{usage.usageId}}</span>
+                    <span>{{ usage.usageId }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.usage.productID">Product ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.usage.productID">Product ID</span></dt>
                 <dd>
-                    <span>{{usage.productID}}</span>
+                    <span>{{ usage.productID }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.usage.branchID">Branch ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.usage.branchID">Branch ID</span></dt>
                 <dd>
-                    <span>{{usage.branchID}}</span>
+                    <span>{{ usage.branchID }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.usage.zoneID">Zone ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.usage.zoneID">Zone ID</span></dt>
                 <dd>
-                    <span>{{usage.zoneID}}</span>
+                    <span>{{ usage.zoneID }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.usage.shelfID">Shelf ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.usage.shelfID">Shelf ID</span></dt>
                 <dd>
-                    <span>{{usage.shelfID}}</span>
+                    <span>{{ usage.shelfID }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.usage.usage">Usage</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.usage.usage">Usage</span></dt>
                 <dd>
-                    <span>{{usage.usage}}</span>
+                    <span>{{ usage.usage }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.usage.datetime">Datetime</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.usage.datetime">Datetime</span></dt>
                 <dd>
-                    <span>{{usage.datetime}}</span>
+                    <span>{{ usage.datetime }}</span>
                 </dd>
             </dl>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/usage', usage.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

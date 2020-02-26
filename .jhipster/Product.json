@@ -2,12 +2,8 @@
     "name": "Product",
     "fields": [
         {
-            "fieldName": "productID",
-            "javadoc": "fieldName",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "name",
+            "javadoc": "fieldName",
             "fieldType": "String"
         },
         {
@@ -63,21 +59,21 @@
             "ownerSide": false
         },
         {
-            "relationshipName": "inventory",
+            "relationshipType": "one-to-one",
             "otherEntityName": "inventory",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "inventory",
+            "ownerSide": false
         }
     ],
-    "changelogDate": "20200225134413",
+    "changelogDate": "20200226045100",
     "entityTableName": "product",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

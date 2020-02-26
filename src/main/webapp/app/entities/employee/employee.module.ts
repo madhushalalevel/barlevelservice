@@ -1,40 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
 
-import { BarLevelServiceSharedModule } from 'app/shared';
-import {
-  EmployeeComponent,
-  EmployeeDetailComponent,
-  EmployeeUpdateComponent,
-  EmployeeDeletePopupComponent,
-  EmployeeDeleteDialogComponent,
-  employeeRoute,
-  employeePopupRoute
-} from './';
-
-const ENTITY_STATES = [...employeeRoute, ...employeePopupRoute];
+import { BarlevelserviceSharedModule } from 'app/shared/shared.module';
+import { EmployeeComponent } from './employee.component';
+import { EmployeeDetailComponent } from './employee-detail.component';
+import { EmployeeUpdateComponent } from './employee-update.component';
+import { EmployeeDeleteDialogComponent } from './employee-delete-dialog.component';
+import { employeeRoute } from './employee.route';
 
 @NgModule({
-  imports: [BarLevelServiceSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [
-    EmployeeComponent,
-    EmployeeDetailComponent,
-    EmployeeUpdateComponent,
-    EmployeeDeleteDialogComponent,
-    EmployeeDeletePopupComponent
-  ],
-  entryComponents: [EmployeeComponent, EmployeeUpdateComponent, EmployeeDeleteDialogComponent, EmployeeDeletePopupComponent],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [BarlevelserviceSharedModule, RouterModule.forChild(employeeRoute)],
+  declarations: [EmployeeComponent, EmployeeDetailComponent, EmployeeUpdateComponent, EmployeeDeleteDialogComponent],
+  entryComponents: [EmployeeDeleteDialogComponent]
 })
-export class BarLevelServiceEmployeeModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey !== undefined) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
-}
+export class BarlevelserviceEmployeeModule {}

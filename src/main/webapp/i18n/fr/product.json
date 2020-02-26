@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "product": {
       "home": {
         "title": "Products",
         "createLabel": "Créer un nouveau Product",
-        "createOrEditLabel": "Créer ou éditer un Product"
+        "createOrEditLabel": "Créer ou éditer un Product",
+        "notFound": "Aucun Product trouvé"
       },
       "created": "Un nouveau Product a été créé avec l'identifiant {{ param }}",
       "updated": "Le Product avec l'identifiant {{ param }} a été mis à jour",
@@ -15,7 +16,6 @@
       "detail": {
         "title": "Product"
       },
-      "productID": "Product ID",
       "name": "Name",
       "barCode": "Bar Code",
       "quantity": "Quantity",
@@ -30,7 +30,7 @@
       "productImage": "Product Image",
       "inventory": "Inventory",
       "help": {
-        "productID": "fieldName"
+        "name": "fieldName"
       }
     }
   }

@@ -1,56 +1,106 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { IInventory, Inventory } from 'app/shared/model/inventory.model';
 import { InventoryService } from './inventory.service';
+import { IProduct } from 'app/shared/model/product.model';
+import { ProductService } from 'app/entities/product/product.service';
+import { IBranch } from 'app/shared/model/branch.model';
+import { BranchService } from 'app/entities/branch/branch.service';
+import { IZone } from 'app/shared/model/zone.model';
+import { ZoneService } from 'app/entities/zone/zone.service';
+import { IShelf } from 'app/shared/model/shelf.model';
+import { ShelfService } from 'app/entities/shelf/shelf.service';
+
+type SelectableEntity = IProduct | IBranch | IZone | IShelf;
 
 @Component({
   selector: 'jhi-inventory-update',
   templateUrl: './inventory-update.component.html'
 })
 export class InventoryUpdateComponent implements OnInit {
-  inventory: IInventory;
-  isSaving: boolean;
+  isSaving = false;
+  products: IProduct[] = [];
+  branches: IBranch[] = [];
+  zones: IZone[] = [];
+  shelves: IShelf[] = [];
 
   editForm = this.fb.group({
     id: [],
-    productID: [],
     tennentID: [],
-    branchID: [],
-    zoneID: [],
-    shelfID: [],
-    currentStockCount: []
+    currentStockCount: [],
+    productId: [],
+    branchId: [],
+    zoneId: [],
+    shelfId: []
   });
 
-  constructor(protected inventoryService: InventoryService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected inventoryService: InventoryService,
+    protected productService: ProductService,
+    protected branchService: BranchService,
+    protected zoneService: ZoneService,
+    protected shelfService: ShelfService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ inventory }) => {
       this.updateForm(inventory);
-      this.inventory = inventory;
+
+      this.productService
+        .query({ filter: 'inventory-is-null' })
+        .pipe(
+          map((res: HttpResponse<IProduct[]>) => {
+            return res.body || [];
+          })
+        )
+        .subscribe((resBody: IProduct[]) => {
+          if (!inventory.productId) {
+            this.products = resBody;
+          } else {
+            this.productService
+              .find(inventory.productId)
+              .pipe(
+                map((subRes: HttpResponse<IProduct>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IProduct[]) => (this.products = concatRes));
+          }
+        });
+
+      this.branchService.query().subscribe((res: HttpResponse<IBranch[]>) => (this.branches = res.body || []));
+
+      this.zoneService.query().subscribe((res: HttpResponse<IZone[]>) => (this.zones = res.body || []));
+
+      this.shelfService.query().subscribe((res: HttpResponse<IShelf[]>) => (this.shelves = res.body || []));
     });
   }
 
-  updateForm(inventory: IInventory) {
+  updateForm(inventory: IInventory): void {
     this.editForm.patchValue({
       id: inventory.id,
-      productID: inventory.productID,
       tennentID: inventory.tennentID,
-      branchID: inventory.branchID,
-      zoneID: inventory.zoneID,
-      shelfID: inventory.shelfID,
-      currentStockCount: inventory.currentStockCount
+      currentStockCount: inventory.currentStockCount,
+      productId: inventory.productId,
+      branchId: inventory.branchId,
+      zoneId: inventory.zoneId,
+      shelfId: inventory.shelfId
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const inventory = this.createFromForm();
     if (inventory.id !== undefined) {
@@ -61,29 +111,35 @@ export class InventoryUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IInventory {
-    const entity = {
+    return {
       ...new Inventory(),
-      id: this.editForm.get(['id']).value,
-      productID: this.editForm.get(['productID']).value,
-      tennentID: this.editForm.get(['tennentID']).value,
-      branchID: this.editForm.get(['branchID']).value,
-      zoneID: this.editForm.get(['zoneID']).value,
-      shelfID: this.editForm.get(['shelfID']).value,
-      currentStockCount: this.editForm.get(['currentStockCount']).value
+      id: this.editForm.get(['id'])!.value,
+      tennentID: this.editForm.get(['tennentID'])!.value,
+      currentStockCount: this.editForm.get(['currentStockCount'])!.value,
+      productId: this.editForm.get(['productId'])!.value,
+      branchId: this.editForm.get(['branchId'])!.value,
+      zoneId: this.editForm.get(['zoneId'])!.value,
+      shelfId: this.editForm.get(['shelfId'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInventory>>) {
-    result.subscribe((res: HttpResponse<IInventory>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInventory>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: SelectableEntity): any {
+    return item.id;
   }
 }

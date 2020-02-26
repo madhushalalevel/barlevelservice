@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "productPositions": {
       "home": {
         "title": "ProductPositions",
         "createLabel": "Créer un nouveau Product Positions",
-        "createOrEditLabel": "Créer ou éditer un Product Positions"
+        "createOrEditLabel": "Créer ou éditer un Product Positions",
+        "notFound": "Aucun Product Positions trouvé"
       },
       "created": "Un nouveau Product Positions a été créé avec l'identifiant {{ param }}",
       "updated": "Le Product Positions avec l'identifiant {{ param }} a été mis à jour",

@@ -1,10 +1,9 @@
-/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
-import { BarLevelServiceTestModule } from '../../../test.module';
+import { BarlevelserviceTestModule } from '../../../test.module';
 import { ZoneUpdateComponent } from 'app/entities/zone/zone-update.component';
 import { ZoneService } from 'app/entities/zone/zone.service';
 import { Zone } from 'app/shared/model/zone.model';
@@ -17,7 +16,7 @@ describe('Component Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [BarLevelServiceTestModule],
+        imports: [BarlevelserviceTestModule],
         declarations: [ZoneUpdateComponent],
         providers: [FormBuilder]
       })

@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -6,62 +6,59 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([
       {
         path: 'product',
-        loadChildren: './product/product.module#BarLevelServiceProductModule'
+        loadChildren: () => import('./product/product.module').then(m => m.BarlevelserviceProductModule)
       },
       {
         path: 'company',
-        loadChildren: './company/company.module#BarLevelServiceCompanyModule'
+        loadChildren: () => import('./company/company.module').then(m => m.BarlevelserviceCompanyModule)
       },
       {
         path: 'branch',
-        loadChildren: './branch/branch.module#BarLevelServiceBranchModule'
+        loadChildren: () => import('./branch/branch.module').then(m => m.BarlevelserviceBranchModule)
       },
       {
         path: 'zone',
-        loadChildren: './zone/zone.module#BarLevelServiceZoneModule'
+        loadChildren: () => import('./zone/zone.module').then(m => m.BarlevelserviceZoneModule)
       },
       {
         path: 'shelf',
-        loadChildren: './shelf/shelf.module#BarLevelServiceShelfModule'
+        loadChildren: () => import('./shelf/shelf.module').then(m => m.BarlevelserviceShelfModule)
       },
       {
         path: 'employee',
-        loadChildren: './employee/employee.module#BarLevelServiceEmployeeModule'
+        loadChildren: () => import('./employee/employee.module').then(m => m.BarlevelserviceEmployeeModule)
       },
       {
         path: 'inventory',
-        loadChildren: './inventory/inventory.module#BarLevelServiceInventoryModule'
+        loadChildren: () => import('./inventory/inventory.module').then(m => m.BarlevelserviceInventoryModule)
       },
       {
         path: 'inventory-stock',
-        loadChildren: './inventory-stock/inventory-stock.module#BarLevelServiceInventoryStockModule'
+        loadChildren: () => import('./inventory-stock/inventory-stock.module').then(m => m.BarlevelserviceInventoryStockModule)
       },
       {
         path: 'usage',
-        loadChildren: './usage/usage.module#BarLevelServiceUsageModule'
+        loadChildren: () => import('./usage/usage.module').then(m => m.BarlevelserviceUsageModule)
       },
       {
         path: 'product-various-positions',
-        loadChildren: './product-various-positions/product-various-positions.module#BarLevelServiceProductVariousPositionsModule'
+        loadChildren: () =>
+          import('./product-various-positions/product-various-positions.module').then(m => m.BarlevelserviceProductVariousPositionsModule)
       },
       {
         path: 'product-positions',
-        loadChildren: './product-positions/product-positions.module#BarLevelServiceProductPositionsModule'
+        loadChildren: () => import('./product-positions/product-positions.module').then(m => m.BarlevelserviceProductPositionsModule)
       },
       {
         path: 'product-image',
-        loadChildren: './product-image/product-image.module#BarLevelServiceProductImageModule'
+        loadChildren: () => import('./product-image/product-image.module').then(m => m.BarlevelserviceProductImageModule)
       },
       {
         path: 'address',
-        loadChildren: './address/address.module#BarLevelServiceAddressModule'
+        loadChildren: () => import('./address/address.module').then(m => m.BarlevelserviceAddressModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])
-  ],
-  declarations: [],
-  entryComponents: [],
-  providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  ]
 })
-export class BarLevelServiceEntityModule {}
+export class BarlevelserviceEntityModule {}

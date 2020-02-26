@@ -1,40 +1,37 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="company">
-            <h2><span jhiTranslate="barLevelServiceApp.company.detail.title">Company</span> {{company.id}}</h2>
+            <h2><span jhiTranslate="barlevelserviceApp.company.detail.title">Company</span> {{ company.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="barLevelServiceApp.company.name">Name</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.company.name">Name</span></dt>
                 <dd>
-                    <span>{{company.name}}</span>
+                    <span>{{ company.name }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.company.discription">Discription</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.company.discription">Discription</span></dt>
                 <dd>
-                    <span>{{company.discription}}</span>
+                    <span>{{ company.discription }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.company.tenantId">Tenant Id</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.company.tenantId">Tenant Id</span></dt>
                 <dd>
-                    <span>{{company.tenantId}}</span>
-                </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.company.inventory">Inventory</span></dt>
-                <dd>
-                    <div *ngIf="company.inventoryId">
-                        <a [routerLink]="['/inventory', company.inventoryId, 'view']">{{company.inventoryId}}</a>
-                    </div>
+                    <span>{{ company.tenantId }}</span>
                 </dd>
             </dl>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/company', company.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

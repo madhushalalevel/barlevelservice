@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "zone": {
       "home": {
         "title": "Zones",
         "createLabel": "Créer un nouveau Zone",
-        "createOrEditLabel": "Créer ou éditer un Zone"
+        "createOrEditLabel": "Créer ou éditer un Zone",
+        "notFound": "Aucun Zone trouvé"
       },
       "created": "Un nouveau Zone a été créé avec l'identifiant {{ param }}",
       "updated": "Le Zone avec l'identifiant {{ param }} a été mis à jour",
@@ -15,12 +16,11 @@
       "detail": {
         "title": "Zone"
       },
-      "zoneID": "Zone ID",
       "name": "Name",
       "discription": "Discription",
       "tenantId": "Tenant Id",
-      "branch": "Branch",
-      "inventory": "Inventory"
+      "inventory": "Inventory",
+      "branch": "Branch"
     }
   }
 }

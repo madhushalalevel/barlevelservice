@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "inventoryStock": {
       "home": {
         "title": "Inventory Stocks",
         "createLabel": "Create a new Inventory Stock",
-        "createOrEditLabel": "Create or edit a Inventory Stock"
+        "createOrEditLabel": "Create or edit a Inventory Stock",
+        "notFound": "No Inventory Stocks found"
       },
       "created": "A new Inventory Stock is created with identifier {{ param }}",
       "updated": "A Inventory Stock is updated with identifier {{ param }}",
@@ -15,10 +16,9 @@
       "detail": {
         "title": "Inventory Stock"
       },
-      "inventoryId": "Inventory Id",
-      "productID": "Product ID",
       "stockCount": "Stock Count",
-      "datetime": "Datetime"
+      "datetime": "Datetime",
+      "inventory": "Inventory"
     }
   }
 }

@@ -1,0 +1,24 @@
+{
+  "barlevelserviceApp": {
+    "productPositions": {
+      "home": {
+        "title": "Product Positions",
+        "createLabel": "Crear nuevo Product Positions",
+        "createOrEditLabel": "Crear o editar Product Positions",
+        "notFound": "Ningún Product Positions encontrado"
+      },
+      "created": "Un nuevo Product Positions ha sido creado con el identificador {{ param }}",
+      "updated": "Un Product Positions ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Product Positions ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Product Positions {{ id }}?"
+      },
+      "detail": {
+        "title": "Product Positions"
+      },
+      "position": "Position",
+      "updatedTime": "Updated Time",
+      "product": "Product"
+    }
+  }
+}

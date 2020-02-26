@@ -16,29 +16,29 @@
     ],
     "relationships": [
         {
-            "relationshipName": "company",
-            "otherEntityName": "company",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        },
-        {
             "relationshipType": "one-to-one",
             "otherEntityName": "address",
             "otherEntityRelationshipName": "employee",
             "relationshipName": "address",
             "otherEntityField": "id",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "company",
+            "otherEntityRelationshipName": "employee",
+            "relationshipName": "company",
+            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20200225134418",
+    "changelogDate": "20200226045600",
     "entityTableName": "employee",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

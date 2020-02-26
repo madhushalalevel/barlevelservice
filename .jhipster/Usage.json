@@ -27,19 +27,18 @@
         },
         {
             "fieldName": "datetime",
-            "fieldType": "Long"
+            "fieldType": "ZonedDateTime"
         }
     ],
     "relationships": [],
-    "changelogDate": "20200225134421",
+    "changelogDate": "20200226045900",
     "entityTableName": "usage",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

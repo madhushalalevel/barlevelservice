@@ -2,32 +2,32 @@
     "name": "InventoryStock",
     "fields": [
         {
-            "fieldName": "inventoryId",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "productID",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "stockCount",
             "fieldType": "Integer"
         },
         {
             "fieldName": "datetime",
-            "fieldType": "Long"
+            "fieldType": "ZonedDateTime"
         }
     ],
-    "relationships": [],
-    "changelogDate": "20200225134420",
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "inventory",
+            "otherEntityRelationshipName": "inventoryStock",
+            "relationshipName": "inventory",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20200226045800",
     "entityTableName": "inventory_stock",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

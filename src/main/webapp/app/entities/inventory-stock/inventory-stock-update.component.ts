@@ -1,52 +1,87 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+
 import { IInventoryStock, InventoryStock } from 'app/shared/model/inventory-stock.model';
 import { InventoryStockService } from './inventory-stock.service';
+import { IInventory } from 'app/shared/model/inventory.model';
+import { InventoryService } from 'app/entities/inventory/inventory.service';
 
 @Component({
   selector: 'jhi-inventory-stock-update',
   templateUrl: './inventory-stock-update.component.html'
 })
 export class InventoryStockUpdateComponent implements OnInit {
-  inventoryStock: IInventoryStock;
-  isSaving: boolean;
+  isSaving = false;
+  inventories: IInventory[] = [];
 
   editForm = this.fb.group({
     id: [],
-    inventoryId: [],
-    productID: [],
     stockCount: [],
-    datetime: []
+    datetime: [],
+    inventoryId: []
   });
 
-  constructor(protected inventoryStockService: InventoryStockService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected inventoryStockService: InventoryStockService,
+    protected inventoryService: InventoryService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ inventoryStock }) => {
+      if (!inventoryStock.id) {
+        const today = moment().startOf('day');
+        inventoryStock.datetime = today;
+      }
+
       this.updateForm(inventoryStock);
-      this.inventoryStock = inventoryStock;
+
+      this.inventoryService
+        .query({ filter: 'inventorystock-is-null' })
+        .pipe(
+          map((res: HttpResponse<IInventory[]>) => {
+            return res.body || [];
+          })
+        )
+        .subscribe((resBody: IInventory[]) => {
+          if (!inventoryStock.inventoryId) {
+            this.inventories = resBody;
+          } else {
+            this.inventoryService
+              .find(inventoryStock.inventoryId)
+              .pipe(
+                map((subRes: HttpResponse<IInventory>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IInventory[]) => (this.inventories = concatRes));
+          }
+        });
     });
   }
 
-  updateForm(inventoryStock: IInventoryStock) {
+  updateForm(inventoryStock: IInventoryStock): void {
     this.editForm.patchValue({
       id: inventoryStock.id,
-      inventoryId: inventoryStock.inventoryId,
-      productID: inventoryStock.productID,
       stockCount: inventoryStock.stockCount,
-      datetime: inventoryStock.datetime
+      datetime: inventoryStock.datetime ? inventoryStock.datetime.format(DATE_TIME_FORMAT) : null,
+      inventoryId: inventoryStock.inventoryId
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const inventoryStock = this.createFromForm();
     if (inventoryStock.id !== undefined) {
@@ -57,27 +92,32 @@ export class InventoryStockUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IInventoryStock {
-    const entity = {
+    return {
       ...new InventoryStock(),
-      id: this.editForm.get(['id']).value,
-      inventoryId: this.editForm.get(['inventoryId']).value,
-      productID: this.editForm.get(['productID']).value,
-      stockCount: this.editForm.get(['stockCount']).value,
-      datetime: this.editForm.get(['datetime']).value
+      id: this.editForm.get(['id'])!.value,
+      stockCount: this.editForm.get(['stockCount'])!.value,
+      datetime: this.editForm.get(['datetime'])!.value ? moment(this.editForm.get(['datetime'])!.value, DATE_TIME_FORMAT) : undefined,
+      inventoryId: this.editForm.get(['inventoryId'])!.value
     };
-    return entity;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInventoryStock>>) {
-    result.subscribe((res: HttpResponse<IInventoryStock>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInventoryStock>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IInventory): any {
+    return item.id;
   }
 }

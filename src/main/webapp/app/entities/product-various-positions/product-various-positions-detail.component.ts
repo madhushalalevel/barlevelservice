@@ -8,17 +8,15 @@ import { IProductVariousPositions } from 'app/shared/model/product-various-posit
   templateUrl: './product-various-positions-detail.component.html'
 })
 export class ProductVariousPositionsDetailComponent implements OnInit {
-  productVariousPositions: IProductVariousPositions;
+  productVariousPositions: IProductVariousPositions | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ productVariousPositions }) => {
-      this.productVariousPositions = productVariousPositions;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ productVariousPositions }) => (this.productVariousPositions = productVariousPositions));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

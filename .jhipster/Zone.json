@@ -2,10 +2,6 @@
     "name": "Zone",
     "fields": [
         {
-            "fieldName": "zoneID",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "name",
             "fieldType": "String"
         },
@@ -20,28 +16,27 @@
     ],
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "inventory",
+            "otherEntityRelationshipName": "zone",
+            "relationshipName": "inventory"
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "branch",
             "otherEntityRelationshipName": "zone",
             "relationshipName": "branch",
             "otherEntityField": "name"
-        },
-        {
-            "relationshipName": "inventory",
-            "otherEntityName": "inventory",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20200225134416",
+    "changelogDate": "20200226045400",
     "entityTableName": "zone",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

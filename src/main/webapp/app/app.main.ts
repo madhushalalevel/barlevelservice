@@ -1,6 +1,6 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ProdConfig } from './blocks/config/prod.config';
-import { BarLevelServiceAppModule } from './app.module';
+import { BarlevelserviceAppModule } from './app.module';
 
 ProdConfig();
 
@@ -9,6 +9,7 @@ if (module['hot']) {
 }
 
 platformBrowserDynamic()
-  .bootstrapModule(BarLevelServiceAppModule, { preserveWhitespaces: true })
-  .then(success => console.log(`Application started`))
+  .bootstrapModule(BarlevelserviceAppModule, { preserveWhitespaces: true })
+  // eslint-disable-next-line no-console
+  .then(() => console.log('Application started'))
   .catch(err => console.error(err));

@@ -2,10 +2,6 @@
     "name": "Branch",
     "fields": [
         {
-            "fieldName": "branchID",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "name",
             "fieldType": "String"
         },
@@ -28,28 +24,27 @@
             "ownerSide": true
         },
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "inventory",
+            "otherEntityRelationshipName": "branch",
+            "relationshipName": "inventory"
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "company",
             "otherEntityRelationshipName": "branch",
             "relationshipName": "company",
             "otherEntityField": "name"
-        },
-        {
-            "relationshipName": "inventory",
-            "otherEntityName": "inventory",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20200225134415",
+    "changelogDate": "20200226045300",
     "entityTableName": "branch",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

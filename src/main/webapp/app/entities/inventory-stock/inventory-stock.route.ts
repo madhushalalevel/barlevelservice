@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
-import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { InventoryStock } from 'app/shared/model/inventory-stock.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IInventoryStock, InventoryStock } from 'app/shared/model/inventory-stock.model';
 import { InventoryStockService } from './inventory-stock.service';
 import { InventoryStockComponent } from './inventory-stock.component';
 import { InventoryStockDetailComponent } from './inventory-stock-detail.component';
 import { InventoryStockUpdateComponent } from './inventory-stock-update.component';
-import { InventoryStockDeletePopupComponent } from './inventory-stock-delete-dialog.component';
-import { IInventoryStock } from 'app/shared/model/inventory-stock.model';
 
 @Injectable({ providedIn: 'root' })
 export class InventoryStockResolve implements Resolve<IInventoryStock> {
-  constructor(private service: InventoryStockService) {}
+  constructor(private service: InventoryStockService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IInventoryStock> {
-    const id = route.params['id'] ? route.params['id'] : null;
+  resolve(route: ActivatedRouteSnapshot): Observable<IInventoryStock> | Observable<never> {
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<InventoryStock>) => response.ok),
-        map((inventoryStock: HttpResponse<InventoryStock>) => inventoryStock.body)
+        flatMap((inventoryStock: HttpResponse<InventoryStock>) => {
+          if (inventoryStock.body) {
+            return of(inventoryStock.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new InventoryStock());
@@ -39,7 +44,7 @@ export const inventoryStockRoute: Routes = [
     data: {
       authorities: ['ROLE_USER'],
       defaultSort: 'id,asc',
-      pageTitle: 'barLevelServiceApp.inventoryStock.home.title'
+      pageTitle: 'barlevelserviceApp.inventoryStock.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -51,7 +56,7 @@ export const inventoryStockRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.inventoryStock.home.title'
+      pageTitle: 'barlevelserviceApp.inventoryStock.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -63,7 +68,7 @@ export const inventoryStockRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.inventoryStock.home.title'
+      pageTitle: 'barlevelserviceApp.inventoryStock.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -75,24 +80,8 @@ export const inventoryStockRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.inventoryStock.home.title'
+      pageTitle: 'barlevelserviceApp.inventoryStock.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const inventoryStockPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: InventoryStockDeletePopupComponent,
-    resolve: {
-      inventoryStock: InventoryStockResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.inventoryStock.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

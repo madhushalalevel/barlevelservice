@@ -8,17 +8,15 @@ import { IUsage } from 'app/shared/model/usage.model';
   templateUrl: './usage-detail.component.html'
 })
 export class UsageDetailComponent implements OnInit {
-  usage: IUsage;
+  usage: IUsage | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ usage }) => {
-      this.usage = usage;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ usage }) => (this.usage = usage));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

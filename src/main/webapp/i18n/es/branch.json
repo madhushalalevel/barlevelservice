@@ -1,0 +1,27 @@
+{
+  "barlevelserviceApp": {
+    "branch": {
+      "home": {
+        "title": "Branches",
+        "createLabel": "Crear nuevo Branch",
+        "createOrEditLabel": "Crear o editar Branch",
+        "notFound": "Ningún Branches encontrado"
+      },
+      "created": "Un nuevo Branch ha sido creado con el identificador {{ param }}",
+      "updated": "Un Branch ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Branch ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Branch {{ id }}?"
+      },
+      "detail": {
+        "title": "Branch"
+      },
+      "name": "Name",
+      "discription": "Discription",
+      "tenantId": "Tenant Id",
+      "address": "Address",
+      "inventory": "Inventory",
+      "company": "Company"
+    }
+  }
+}

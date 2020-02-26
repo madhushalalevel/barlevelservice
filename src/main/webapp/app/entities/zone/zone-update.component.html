@@ -1,56 +1,50 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-zone-heading" jhiTranslate="barLevelServiceApp.zone.home.createOrEditLabel">Create or edit a Zone</h2>
+            <h2 id="jhi-zone-heading" jhiTranslate="barlevelserviceApp.zone.home.createOrEditLabel">Create or edit a Zone</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!zone.id">
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.zone.zoneID" for="field_zoneID">Zone ID</label>
-                    <input type="number" class="form-control" name="zoneID" id="field_zoneID"
-                           formControlName="zoneID"/>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.zone.name" for="field_name">Name</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.zone.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.zone.discription" for="field_discription">Discription</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.zone.discription" for="field_discription">Discription</label>
                     <input type="text" class="form-control" name="discription" id="field_discription"
                            formControlName="discription"/>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.zone.tenantId" for="field_tenantId">Tenant Id</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.zone.tenantId" for="field_tenantId">Tenant Id</label>
                     <input type="text" class="form-control" name="tenantId" id="field_tenantId"
                            formControlName="tenantId"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.zone.branch" for="field_branch">Branch</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.zone.branch" for="field_branch">Branch</label>
                     <select class="form-control" id="field_branch" name="branch" formControlName="branchId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="branchOption.id" *ngFor="let branchOption of branches; trackBy: trackBranchById">{{branchOption.name}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.zone.inventory" for="field_inventory">Inventory</label>
-                    <select class="form-control" id="field_inventory" name="inventory" formControlName="inventoryId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="inventoryOption.id" *ngFor="let inventoryOption of inventories; trackBy: trackInventoryById">{{inventoryOption.id}}</option>
+                        <option [ngValue]="branchOption.id" *ngFor="let branchOption of branches; trackBy: trackById">{{ branchOption.name }}</option>
                     </select>
                 </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

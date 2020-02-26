@@ -1,34 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
 
-import { BarLevelServiceSharedModule } from 'app/shared';
-import {
-  ShelfComponent,
-  ShelfDetailComponent,
-  ShelfUpdateComponent,
-  ShelfDeletePopupComponent,
-  ShelfDeleteDialogComponent,
-  shelfRoute,
-  shelfPopupRoute
-} from './';
-
-const ENTITY_STATES = [...shelfRoute, ...shelfPopupRoute];
+import { BarlevelserviceSharedModule } from 'app/shared/shared.module';
+import { ShelfComponent } from './shelf.component';
+import { ShelfDetailComponent } from './shelf-detail.component';
+import { ShelfUpdateComponent } from './shelf-update.component';
+import { ShelfDeleteDialogComponent } from './shelf-delete-dialog.component';
+import { shelfRoute } from './shelf.route';
 
 @NgModule({
-  imports: [BarLevelServiceSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [ShelfComponent, ShelfDetailComponent, ShelfUpdateComponent, ShelfDeleteDialogComponent, ShelfDeletePopupComponent],
-  entryComponents: [ShelfComponent, ShelfUpdateComponent, ShelfDeleteDialogComponent, ShelfDeletePopupComponent],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [BarlevelserviceSharedModule, RouterModule.forChild(shelfRoute)],
+  declarations: [ShelfComponent, ShelfDetailComponent, ShelfUpdateComponent, ShelfDeleteDialogComponent],
+  entryComponents: [ShelfDeleteDialogComponent]
 })
-export class BarLevelServiceShelfModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey !== undefined) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
-}
+export class BarlevelserviceShelfModule {}

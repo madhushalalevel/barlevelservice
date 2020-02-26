@@ -1,42 +1,45 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-inventory-stock-heading" jhiTranslate="barLevelServiceApp.inventoryStock.home.createOrEditLabel">Create or edit a Inventory Stock</h2>
+            <h2 id="jhi-inventory-stock-heading" jhiTranslate="barlevelserviceApp.inventoryStock.home.createOrEditLabel">Create or edit a Inventory Stock</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!inventoryStock.id">
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.inventoryStock.inventoryId" for="field_inventoryId">Inventory Id</label>
-                    <input type="number" class="form-control" name="inventoryId" id="field_inventoryId"
-                           formControlName="inventoryId"/>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.inventoryStock.productID" for="field_productID">Product ID</label>
-                    <input type="number" class="form-control" name="productID" id="field_productID"
-                           formControlName="productID"/>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.inventoryStock.stockCount" for="field_stockCount">Stock Count</label>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.inventoryStock.stockCount" for="field_stockCount">Stock Count</label>
                     <input type="number" class="form-control" name="stockCount" id="field_stockCount"
                            formControlName="stockCount"/>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="barLevelServiceApp.inventoryStock.datetime" for="field_datetime">Datetime</label>
-                    <input type="number" class="form-control" name="datetime" id="field_datetime"
-                           formControlName="datetime"/>
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.inventoryStock.datetime" for="field_datetime">Datetime</label>
+                    <div class="d-flex">
+                        <input id="field_datetime" type="datetime-local" class="form-control" name="datetime" formControlName="datetime" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="barlevelserviceApp.inventoryStock.inventory" for="field_inventory">Inventory</label>
+                    <select class="form-control" id="field_inventory" name="inventory" formControlName="inventoryId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="inventoryOption.id" *ngFor="let inventoryOption of inventories; trackBy: trackById">{{ inventoryOption.id }}</option>
+                    </select>
+                </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

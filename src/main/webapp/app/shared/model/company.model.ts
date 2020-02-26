@@ -6,7 +6,6 @@ export interface ICompany {
   discription?: string;
   tenantId?: string;
   employees?: IEmployee[];
-  inventoryId?: number;
 }
 
 export class Company implements ICompany {
@@ -15,7 +14,6 @@ export class Company implements ICompany {
     public name?: string,
     public discription?: string,
     public tenantId?: string,
-    public employees?: IEmployee[],
-    public inventoryId?: number
+    public employees?: IEmployee[]
   ) {}
 }

@@ -8,17 +8,15 @@ import { IShelf } from 'app/shared/model/shelf.model';
   templateUrl: './shelf-detail.component.html'
 })
 export class ShelfDetailComponent implements OnInit {
-  shelf: IShelf;
+  shelf: IShelf | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ shelf }) => {
-      this.shelf = shelf;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ shelf }) => (this.shelf = shelf));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

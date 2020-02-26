@@ -1,0 +1,26 @@
+{
+  "barlevelserviceApp": {
+    "shelf": {
+      "home": {
+        "title": "Shelves",
+        "createLabel": "Criar novo(a) Shelf",
+        "createOrEditLabel": "Criar ou editar Shelf",
+        "notFound": "Nenhum Shelves encontrado"
+      },
+      "created": "Um novo Shelf foi criado com o identificador {{ param }}",
+      "updated": "Shelf com identificador {{ param }} foi actualizado",
+      "deleted": "Shelf com identificador {{ param }} foi eliminado",
+      "delete": {
+        "question": "Tem a certeza que pretende eliminar o(a) Shelf {{ id }}?"
+      },
+      "detail": {
+        "title": "Shelf"
+      },
+      "name": "Name",
+      "discription": "Discription",
+      "tenantId": "Tenant Id",
+      "inventory": "Inventory",
+      "zone": "Zone"
+    }
+  }
+}

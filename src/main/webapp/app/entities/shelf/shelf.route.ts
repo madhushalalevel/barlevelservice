@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
-import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { Shelf } from 'app/shared/model/shelf.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IShelf, Shelf } from 'app/shared/model/shelf.model';
 import { ShelfService } from './shelf.service';
 import { ShelfComponent } from './shelf.component';
 import { ShelfDetailComponent } from './shelf-detail.component';
 import { ShelfUpdateComponent } from './shelf-update.component';
-import { ShelfDeletePopupComponent } from './shelf-delete-dialog.component';
-import { IShelf } from 'app/shared/model/shelf.model';
 
 @Injectable({ providedIn: 'root' })
 export class ShelfResolve implements Resolve<IShelf> {
-  constructor(private service: ShelfService) {}
+  constructor(private service: ShelfService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IShelf> {
-    const id = route.params['id'] ? route.params['id'] : null;
+  resolve(route: ActivatedRouteSnapshot): Observable<IShelf> | Observable<never> {
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<Shelf>) => response.ok),
-        map((shelf: HttpResponse<Shelf>) => shelf.body)
+        flatMap((shelf: HttpResponse<Shelf>) => {
+          if (shelf.body) {
+            return of(shelf.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new Shelf());
@@ -39,7 +44,7 @@ export const shelfRoute: Routes = [
     data: {
       authorities: ['ROLE_USER'],
       defaultSort: 'id,asc',
-      pageTitle: 'barLevelServiceApp.shelf.home.title'
+      pageTitle: 'barlevelserviceApp.shelf.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -51,7 +56,7 @@ export const shelfRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.shelf.home.title'
+      pageTitle: 'barlevelserviceApp.shelf.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -63,7 +68,7 @@ export const shelfRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.shelf.home.title'
+      pageTitle: 'barlevelserviceApp.shelf.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -75,24 +80,8 @@ export const shelfRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.shelf.home.title'
+      pageTitle: 'barlevelserviceApp.shelf.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const shelfPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: ShelfDeletePopupComponent,
-    resolve: {
-      shelf: ShelfResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.shelf.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

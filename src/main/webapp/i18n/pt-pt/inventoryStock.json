@@ -1,0 +1,24 @@
+{
+  "barlevelserviceApp": {
+    "inventoryStock": {
+      "home": {
+        "title": "Inventory Stocks",
+        "createLabel": "Criar novo(a) Inventory Stock",
+        "createOrEditLabel": "Criar ou editar Inventory Stock",
+        "notFound": "Nenhum Inventory Stocks encontrado"
+      },
+      "created": "Um novo Inventory Stock foi criado com o identificador {{ param }}",
+      "updated": "Inventory Stock com identificador {{ param }} foi actualizado",
+      "deleted": "Inventory Stock com identificador {{ param }} foi eliminado",
+      "delete": {
+        "question": "Tem a certeza que pretende eliminar o(a) Inventory Stock {{ id }}?"
+      },
+      "detail": {
+        "title": "Inventory Stock"
+      },
+      "stockCount": "Stock Count",
+      "datetime": "Datetime",
+      "inventory": "Inventory"
+    }
+  }
+}

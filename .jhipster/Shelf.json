@@ -2,10 +2,6 @@
     "name": "Shelf",
     "fields": [
         {
-            "fieldName": "shelfID",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "name",
             "fieldType": "String"
         },
@@ -20,28 +16,27 @@
     ],
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "inventory",
+            "otherEntityRelationshipName": "shelf",
+            "relationshipName": "inventory"
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "zone",
             "otherEntityRelationshipName": "shelf",
             "relationshipName": "zone",
             "otherEntityField": "name"
-        },
-        {
-            "relationshipName": "inventory",
-            "otherEntityName": "inventory",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20200225134417",
+    "changelogDate": "20200226045500",
     "entityTableName": "shelf",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

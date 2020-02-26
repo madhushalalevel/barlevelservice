@@ -21,15 +21,14 @@
             "ownerSide": true
         }
     ],
-    "changelogDate": "20200225134424",
+    "changelogDate": "20200226050200",
     "entityTableName": "product_image",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

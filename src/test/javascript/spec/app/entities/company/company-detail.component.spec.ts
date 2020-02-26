@@ -1,9 +1,8 @@
-/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-import { BarLevelServiceTestModule } from '../../../test.module';
+import { BarlevelserviceTestModule } from '../../../test.module';
 import { CompanyDetailComponent } from 'app/entities/company/company-detail.component';
 import { Company } from 'app/shared/model/company.model';
 
@@ -15,7 +14,7 @@ describe('Component Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [BarLevelServiceTestModule],
+        imports: [BarlevelserviceTestModule],
         declarations: [CompanyDetailComponent],
         providers: [{ provide: ActivatedRoute, useValue: route }]
       })
@@ -26,9 +25,7 @@ describe('Component Tests', () => {
     });
 
     describe('OnInit', () => {
-      it('Should call load all on init', () => {
-        // GIVEN
-
+      it('Should load company on init', () => {
         // WHEN
         comp.ngOnInit();
 

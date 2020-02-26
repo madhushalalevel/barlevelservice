@@ -1,0 +1,25 @@
+{
+  "barlevelserviceApp": {
+    "productVariousPositions": {
+      "home": {
+        "title": "Product Various Positions",
+        "createLabel": "Crear nuevo Product Various Positions",
+        "createOrEditLabel": "Crear o editar Product Various Positions",
+        "notFound": "Ningún Product Various Positions encontrado"
+      },
+      "created": "Un nuevo Product Various Positions ha sido creado con el identificador {{ param }}",
+      "updated": "Un Product Various Positions ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Product Various Positions ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Product Various Positions {{ id }}?"
+      },
+      "detail": {
+        "title": "Product Various Positions"
+      },
+      "xAxis": "X Axis",
+      "yAxis": "Y Axis",
+      "order": "Order",
+      "product": "Product"
+    }
+  }
+}

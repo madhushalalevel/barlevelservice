@@ -3,8 +3,8 @@ export interface IEmployee {
   name?: string;
   phoneNumber?: number;
   email?: string;
-  companyId?: number;
   addressId?: number;
+  companyId?: number;
 }
 
 export class Employee implements IEmployee {
@@ -13,7 +13,7 @@ export class Employee implements IEmployee {
     public name?: string,
     public phoneNumber?: number,
     public email?: string,
-    public companyId?: number,
-    public addressId?: number
+    public addressId?: number,
+    public companyId?: number
   ) {}
 }

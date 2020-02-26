@@ -1,22 +1,25 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="productPositions">
-            <h2><span jhiTranslate="barLevelServiceApp.productPositions.detail.title">Product Positions</span> {{productPositions.id}}</h2>
+            <h2><span jhiTranslate="barlevelserviceApp.productPositions.detail.title">Product Positions</span> {{ productPositions.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="barLevelServiceApp.productPositions.position">Position</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.productPositions.position">Position</span></dt>
                 <dd>
-                    <span>{{productPositions.position}}</span>
+                    <span>{{ productPositions.position }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.productPositions.updatedTime">Updated Time</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.productPositions.updatedTime">Updated Time</span></dt>
                 <dd>
-                    <span>{{productPositions.updatedTime}}</span>
+                    <span>{{ productPositions.updatedTime }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.productPositions.product">Product</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.productPositions.product">Product</span></dt>
                 <dd>
                     <div *ngIf="productPositions.productId">
-                        <a [routerLink]="['/product', productPositions.productId, 'view']">{{productPositions.productName}}</a>
+                        <a [routerLink]="['/product', productPositions.productId, 'view']">{{ productPositions.productName }}</a>
                     </div>
                 </dd>
             </dl>
@@ -24,13 +27,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/product-positions', productPositions.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

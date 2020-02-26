@@ -20,23 +20,16 @@
             "otherEntityName": "employee",
             "otherEntityRelationshipName": "company",
             "relationshipName": "employee"
-        },
-        {
-            "relationshipName": "inventory",
-            "otherEntityName": "inventory",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20200225134414",
+    "changelogDate": "20200226045200",
     "entityTableName": "company",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

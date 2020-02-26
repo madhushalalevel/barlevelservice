@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
-import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { ProductVariousPositions } from 'app/shared/model/product-various-positions.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IProductVariousPositions, ProductVariousPositions } from 'app/shared/model/product-various-positions.model';
 import { ProductVariousPositionsService } from './product-various-positions.service';
 import { ProductVariousPositionsComponent } from './product-various-positions.component';
 import { ProductVariousPositionsDetailComponent } from './product-various-positions-detail.component';
 import { ProductVariousPositionsUpdateComponent } from './product-various-positions-update.component';
-import { ProductVariousPositionsDeletePopupComponent } from './product-various-positions-delete-dialog.component';
-import { IProductVariousPositions } from 'app/shared/model/product-various-positions.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductVariousPositionsResolve implements Resolve<IProductVariousPositions> {
-  constructor(private service: ProductVariousPositionsService) {}
+  constructor(private service: ProductVariousPositionsService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IProductVariousPositions> {
-    const id = route.params['id'] ? route.params['id'] : null;
+  resolve(route: ActivatedRouteSnapshot): Observable<IProductVariousPositions> | Observable<never> {
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<ProductVariousPositions>) => response.ok),
-        map((productVariousPositions: HttpResponse<ProductVariousPositions>) => productVariousPositions.body)
+        flatMap((productVariousPositions: HttpResponse<ProductVariousPositions>) => {
+          if (productVariousPositions.body) {
+            return of(productVariousPositions.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new ProductVariousPositions());
@@ -39,7 +44,7 @@ export const productVariousPositionsRoute: Routes = [
     data: {
       authorities: ['ROLE_USER'],
       defaultSort: 'id,asc',
-      pageTitle: 'barLevelServiceApp.productVariousPositions.home.title'
+      pageTitle: 'barlevelserviceApp.productVariousPositions.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -51,7 +56,7 @@ export const productVariousPositionsRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.productVariousPositions.home.title'
+      pageTitle: 'barlevelserviceApp.productVariousPositions.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -63,7 +68,7 @@ export const productVariousPositionsRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.productVariousPositions.home.title'
+      pageTitle: 'barlevelserviceApp.productVariousPositions.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -75,24 +80,8 @@ export const productVariousPositionsRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.productVariousPositions.home.title'
+      pageTitle: 'barlevelserviceApp.productVariousPositions.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const productVariousPositionsPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: ProductVariousPositionsDeletePopupComponent,
-    resolve: {
-      productVariousPositions: ProductVariousPositionsResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.productVariousPositions.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

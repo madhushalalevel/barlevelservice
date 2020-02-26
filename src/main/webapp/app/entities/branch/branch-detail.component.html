@@ -1,42 +1,35 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="branch">
-            <h2><span jhiTranslate="barLevelServiceApp.branch.detail.title">Branch</span> {{branch.id}}</h2>
+            <h2><span jhiTranslate="barlevelserviceApp.branch.detail.title">Branch</span> {{ branch.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="barLevelServiceApp.branch.branchID">Branch ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.branch.name">Name</span></dt>
                 <dd>
-                    <span>{{branch.branchID}}</span>
+                    <span>{{ branch.name }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.branch.name">Name</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.branch.discription">Discription</span></dt>
                 <dd>
-                    <span>{{branch.name}}</span>
+                    <span>{{ branch.discription }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.branch.discription">Discription</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.branch.tenantId">Tenant Id</span></dt>
                 <dd>
-                    <span>{{branch.discription}}</span>
+                    <span>{{ branch.tenantId }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.branch.tenantId">Tenant Id</span></dt>
-                <dd>
-                    <span>{{branch.tenantId}}</span>
-                </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.branch.address">Address</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.branch.address">Address</span></dt>
                 <dd>
                     <div *ngIf="branch.addressId">
-                        <a [routerLink]="['/address', branch.addressId, 'view']">{{branch.addressId}}</a>
+                        <a [routerLink]="['/address', branch.addressId, 'view']">{{ branch.addressId }}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.branch.company">Company</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.branch.company">Company</span></dt>
                 <dd>
                     <div *ngIf="branch.companyId">
-                        <a [routerLink]="['/company', branch.companyId, 'view']">{{branch.companyName}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.branch.inventory">Inventory</span></dt>
-                <dd>
-                    <div *ngIf="branch.inventoryId">
-                        <a [routerLink]="['/inventory', branch.inventoryId, 'view']">{{branch.inventoryId}}</a>
+                        <a [routerLink]="['/company', branch.companyId, 'view']">{{ branch.companyName }}</a>
                     </div>
                 </dd>
             </dl>
@@ -44,13 +37,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/branch', branch.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

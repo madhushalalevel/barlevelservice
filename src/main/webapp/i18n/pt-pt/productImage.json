@@ -1,0 +1,24 @@
+{
+  "barlevelserviceApp": {
+    "productImage": {
+      "home": {
+        "title": "Product Images",
+        "createLabel": "Criar novo(a) Product Image",
+        "createOrEditLabel": "Criar ou editar Product Image",
+        "notFound": "Nenhum Product Images encontrado"
+      },
+      "created": "Um novo Product Image foi criado com o identificador {{ param }}",
+      "updated": "Product Image com identificador {{ param }} foi actualizado",
+      "deleted": "Product Image com identificador {{ param }} foi eliminado",
+      "delete": {
+        "question": "Tem a certeza que pretende eliminar o(a) Product Image {{ id }}?"
+      },
+      "detail": {
+        "title": "Product Image"
+      },
+      "imageUrl": "Image Url",
+      "image": "Image",
+      "product": "Product"
+    }
+  }
+}

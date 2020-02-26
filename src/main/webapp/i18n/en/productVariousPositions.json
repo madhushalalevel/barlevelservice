@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "productVariousPositions": {
       "home": {
         "title": "Product Various Positions",
         "createLabel": "Create a new Product Various Positions",
-        "createOrEditLabel": "Create or edit a Product Various Positions"
+        "createOrEditLabel": "Create or edit a Product Various Positions",
+        "notFound": "No Product Various Positions found"
       },
       "created": "A new Product Various Positions is created with identifier {{ param }}",
       "updated": "A Product Various Positions is updated with identifier {{ param }}",

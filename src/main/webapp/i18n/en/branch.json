@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "branch": {
       "home": {
         "title": "Branches",
         "createLabel": "Create a new Branch",
-        "createOrEditLabel": "Create or edit a Branch"
+        "createOrEditLabel": "Create or edit a Branch",
+        "notFound": "No Branches found"
       },
       "created": "A new Branch is created with identifier {{ param }}",
       "updated": "A Branch is updated with identifier {{ param }}",
@@ -15,13 +16,12 @@
       "detail": {
         "title": "Branch"
       },
-      "branchID": "Branch ID",
       "name": "Name",
       "discription": "Discription",
       "tenantId": "Tenant Id",
       "address": "Address",
-      "company": "Company",
-      "inventory": "Inventory"
+      "inventory": "Inventory",
+      "company": "Company"
     }
   }
 }

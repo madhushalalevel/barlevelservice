@@ -1,34 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
 
-import { BarLevelServiceSharedModule } from 'app/shared';
-import {
-  UsageComponent,
-  UsageDetailComponent,
-  UsageUpdateComponent,
-  UsageDeletePopupComponent,
-  UsageDeleteDialogComponent,
-  usageRoute,
-  usagePopupRoute
-} from './';
-
-const ENTITY_STATES = [...usageRoute, ...usagePopupRoute];
+import { BarlevelserviceSharedModule } from 'app/shared/shared.module';
+import { UsageComponent } from './usage.component';
+import { UsageDetailComponent } from './usage-detail.component';
+import { UsageUpdateComponent } from './usage-update.component';
+import { UsageDeleteDialogComponent } from './usage-delete-dialog.component';
+import { usageRoute } from './usage.route';
 
 @NgModule({
-  imports: [BarLevelServiceSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [UsageComponent, UsageDetailComponent, UsageUpdateComponent, UsageDeleteDialogComponent, UsageDeletePopupComponent],
-  entryComponents: [UsageComponent, UsageUpdateComponent, UsageDeleteDialogComponent, UsageDeletePopupComponent],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [BarlevelserviceSharedModule, RouterModule.forChild(usageRoute)],
+  declarations: [UsageComponent, UsageDetailComponent, UsageUpdateComponent, UsageDeleteDialogComponent],
+  entryComponents: [UsageDeleteDialogComponent]
 })
-export class BarLevelServiceUsageModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey !== undefined) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
-}
+export class BarlevelserviceUsageModule {}

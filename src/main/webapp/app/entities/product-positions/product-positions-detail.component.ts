@@ -8,17 +8,15 @@ import { IProductPositions } from 'app/shared/model/product-positions.model';
   templateUrl: './product-positions-detail.component.html'
 })
 export class ProductPositionsDetailComponent implements OnInit {
-  productPositions: IProductPositions;
+  productPositions: IProductPositions | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ productPositions }) => {
-      this.productPositions = productPositions;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ productPositions }) => (this.productPositions = productPositions));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

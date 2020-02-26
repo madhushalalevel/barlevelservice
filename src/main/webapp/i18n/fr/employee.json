@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "employee": {
       "home": {
         "title": "Employees",
         "createLabel": "Créer un nouveau Employee",
-        "createOrEditLabel": "Créer ou éditer un Employee"
+        "createOrEditLabel": "Créer ou éditer un Employee",
+        "notFound": "Aucun Employee trouvé"
       },
       "created": "Un nouveau Employee a été créé avec l'identifiant {{ param }}",
       "updated": "Le Employee avec l'identifiant {{ param }} a été mis à jour",
@@ -18,8 +19,8 @@
       "name": "Name",
       "phoneNumber": "Phone Number",
       "email": "Email",
-      "company": "Company",
-      "address": "Address"
+      "address": "Address",
+      "company": "Company"
     }
   }
 }

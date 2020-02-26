@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "inventory": {
       "home": {
         "title": "Inventories",
         "createLabel": "Create a new Inventory",
-        "createOrEditLabel": "Create or edit a Inventory"
+        "createOrEditLabel": "Create or edit a Inventory",
+        "notFound": "No Inventories found"
       },
       "created": "A new Inventory is created with identifier {{ param }}",
       "updated": "A Inventory is updated with identifier {{ param }}",
@@ -15,17 +16,13 @@
       "detail": {
         "title": "Inventory"
       },
-      "productID": "Product ID",
       "tennentID": "Tennent ID",
-      "branchID": "Branch ID",
-      "zoneID": "Zone ID",
-      "shelfID": "Shelf ID",
       "currentStockCount": "Current Stock Count",
-      "employee": "Employee",
-      "employee": "Employee",
-      "employee": "Employee",
-      "employee": "Employee",
-      "employee": "Employee"
+      "product": "Product",
+      "inventoryStock": "Inventory Stock",
+      "branch": "Branch",
+      "zone": "Zone",
+      "shelf": "Shelf"
     }
   }
 }

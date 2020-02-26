@@ -1,46 +1,57 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="inventory">
-            <h2><span jhiTranslate="barLevelServiceApp.inventory.detail.title">Inventory</span> {{inventory.id}}</h2>
+            <h2><span jhiTranslate="barlevelserviceApp.inventory.detail.title">Inventory</span> {{ inventory.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="barLevelServiceApp.inventory.productID">Product ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.inventory.tennentID">Tennent ID</span></dt>
                 <dd>
-                    <span>{{inventory.productID}}</span>
+                    <span>{{ inventory.tennentID }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.inventory.tennentID">Tennent ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.inventory.currentStockCount">Current Stock Count</span></dt>
                 <dd>
-                    <span>{{inventory.tennentID}}</span>
+                    <span>{{ inventory.currentStockCount }}</span>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.inventory.branchID">Branch ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.inventory.product">Product</span></dt>
                 <dd>
-                    <span>{{inventory.branchID}}</span>
+                    <div *ngIf="inventory.productId">
+                        <a [routerLink]="['/product', inventory.productId, 'view']">{{ inventory.productId }}</a>
+                    </div>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.inventory.zoneID">Zone ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.inventory.branch">Branch</span></dt>
                 <dd>
-                    <span>{{inventory.zoneID}}</span>
+                    <div *ngIf="inventory.branchId">
+                        <a [routerLink]="['/branch', inventory.branchId, 'view']">{{ inventory.branchId }}</a>
+                    </div>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.inventory.shelfID">Shelf ID</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.inventory.zone">Zone</span></dt>
                 <dd>
-                    <span>{{inventory.shelfID}}</span>
+                    <div *ngIf="inventory.zoneId">
+                        <a [routerLink]="['/zone', inventory.zoneId, 'view']">{{ inventory.zoneId }}</a>
+                    </div>
                 </dd>
-                <dt><span jhiTranslate="barLevelServiceApp.inventory.currentStockCount">Current Stock Count</span></dt>
+                <dt><span jhiTranslate="barlevelserviceApp.inventory.shelf">Shelf</span></dt>
                 <dd>
-                    <span>{{inventory.currentStockCount}}</span>
+                    <div *ngIf="inventory.shelfId">
+                        <a [routerLink]="['/shelf', inventory.shelfId, 'view']">{{ inventory.shelfId }}</a>
+                    </div>
                 </dd>
             </dl>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/inventory', inventory.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

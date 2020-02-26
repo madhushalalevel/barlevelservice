@@ -8,17 +8,15 @@ import { IProduct } from 'app/shared/model/product.model';
   templateUrl: './product-detail.component.html'
 })
 export class ProductDetailComponent implements OnInit {
-  product: IProduct;
+  product: IProduct | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ product }) => {
-      this.product = product;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ product }) => (this.product = product));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

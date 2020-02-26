@@ -1,23 +1,23 @@
+import { IInventory } from 'app/shared/model/inventory.model';
+
 export interface IZone {
   id?: number;
-  zoneID?: number;
   name?: string;
   discription?: string;
   tenantId?: string;
+  inventories?: IInventory[];
   branchName?: string;
   branchId?: number;
-  inventoryId?: number;
 }
 
 export class Zone implements IZone {
   constructor(
     public id?: number,
-    public zoneID?: number,
     public name?: string,
     public discription?: string,
     public tenantId?: string,
+    public inventories?: IInventory[],
     public branchName?: string,
-    public branchId?: number,
-    public inventoryId?: number
+    public branchId?: number
   ) {}
 }

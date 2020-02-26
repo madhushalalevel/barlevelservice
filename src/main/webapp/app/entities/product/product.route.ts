@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
-import { UserRouteAccessService } from 'app/core';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { Product } from 'app/shared/model/product.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IProduct, Product } from 'app/shared/model/product.model';
 import { ProductService } from './product.service';
 import { ProductComponent } from './product.component';
 import { ProductDetailComponent } from './product-detail.component';
 import { ProductUpdateComponent } from './product-update.component';
-import { ProductDeletePopupComponent } from './product-delete-dialog.component';
-import { IProduct } from 'app/shared/model/product.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductResolve implements Resolve<IProduct> {
-  constructor(private service: ProductService) {}
+  constructor(private service: ProductService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IProduct> {
-    const id = route.params['id'] ? route.params['id'] : null;
+  resolve(route: ActivatedRouteSnapshot): Observable<IProduct> | Observable<never> {
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        filter((response: HttpResponse<Product>) => response.ok),
-        map((product: HttpResponse<Product>) => product.body)
+        flatMap((product: HttpResponse<Product>) => {
+          if (product.body) {
+            return of(product.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
       );
     }
     return of(new Product());
@@ -39,7 +44,7 @@ export const productRoute: Routes = [
     data: {
       authorities: ['ROLE_USER'],
       defaultSort: 'id,asc',
-      pageTitle: 'barLevelServiceApp.product.home.title'
+      pageTitle: 'barlevelserviceApp.product.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -51,7 +56,7 @@ export const productRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.product.home.title'
+      pageTitle: 'barlevelserviceApp.product.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -63,7 +68,7 @@ export const productRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.product.home.title'
+      pageTitle: 'barlevelserviceApp.product.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -75,24 +80,8 @@ export const productRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.product.home.title'
+      pageTitle: 'barlevelserviceApp.product.home.title'
     },
     canActivate: [UserRouteAccessService]
-  }
-];
-
-export const productPopupRoute: Routes = [
-  {
-    path: ':id/delete',
-    component: ProductDeletePopupComponent,
-    resolve: {
-      product: ProductResolve
-    },
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'barLevelServiceApp.product.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
   }
 ];

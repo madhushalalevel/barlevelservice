@@ -2,7 +2,7 @@ import { TestBed, async, tick, fakeAsync, inject } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
-import { BarLevelServiceTestModule } from '../../../test.module';
+import { BarlevelserviceTestModule } from '../../../test.module';
 import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { ActivateService } from 'app/account/activate/activate.service';
 import { ActivateComponent } from 'app/account/activate/activate.component';
@@ -13,7 +13,7 @@ describe('Component Tests', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [BarLevelServiceTestModule],
+        imports: [BarlevelserviceTestModule],
         declarations: [ActivateComponent],
         providers: [
           {
@@ -43,7 +43,7 @@ describe('Component Tests', () => {
       })
     ));
 
-    it('should set set success to OK upon successful activation', inject(
+    it('should set set success to true upon successful activation', inject(
       [ActivateService],
       fakeAsync((service: ActivateService) => {
         spyOn(service, 'get').and.returnValue(of({}));
@@ -51,12 +51,12 @@ describe('Component Tests', () => {
         comp.ngOnInit();
         tick();
 
-        expect(comp.error).toBe(null);
-        expect(comp.success).toEqual('OK');
+        expect(comp.error).toBe(false);
+        expect(comp.success).toBe(true);
       })
     ));
 
-    it('should set set error to ERROR upon activation failure', inject(
+    it('should set set error to true upon activation failure', inject(
       [ActivateService],
       fakeAsync((service: ActivateService) => {
         spyOn(service, 'get').and.returnValue(throwError('ERROR'));
@@ -64,8 +64,8 @@ describe('Component Tests', () => {
         comp.ngOnInit();
         tick();
 
-        expect(comp.error).toBe('ERROR');
-        expect(comp.success).toEqual(null);
+        expect(comp.error).toBe(true);
+        expect(comp.success).toBe(false);
       })
     ));
   });

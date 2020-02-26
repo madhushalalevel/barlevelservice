@@ -23,15 +23,14 @@
             "otherEntityField": "name"
         }
     ],
-    "changelogDate": "20200225134422",
+    "changelogDate": "20200226050000",
     "entityTableName": "product_various_positions",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

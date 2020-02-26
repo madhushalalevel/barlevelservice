@@ -1,72 +1,81 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="barLevelServiceApp.productVariousPositions.home.title">Product Various Positions</span>
+        <span jhiTranslate="barlevelserviceApp.productVariousPositions.home.title">Product Various Positions</span>
+
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-product-various-positions" [routerLink]="['/product-various-positions/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="barLevelServiceApp.productVariousPositions.home.createLabel">
-            Create new Product Various Positions
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="barlevelserviceApp.productVariousPositions.home.createLabel">
+            Create a new Product Various Positions
             </span>
         </button>
     </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
-    <br/>
-    <div class="table-responsive" *ngIf="productVariousPositions">
-        <table class="table table-striped">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="productVariousPositions?.length === 0">
+        <span jhiTranslate="barlevelserviceApp.productVariousPositions.home.notFound">No productVariousPositions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="productVariousPositions?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="xAxis"><span jhiTranslate="barLevelServiceApp.productVariousPositions.xAxis">X Axis</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="yAxis"><span jhiTranslate="barLevelServiceApp.productVariousPositions.yAxis">Y Axis</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="order"><span jhiTranslate="barLevelServiceApp.productVariousPositions.order">Order</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="productName"><span jhiTranslate="barLevelServiceApp.productVariousPositions.product">Product</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
-            </tr>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="xAxis"><span jhiTranslate="barlevelserviceApp.productVariousPositions.xAxis">X Axis</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="yAxis"><span jhiTranslate="barlevelserviceApp.productVariousPositions.yAxis">Y Axis</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="order"><span jhiTranslate="barlevelserviceApp.productVariousPositions.order">Order</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="productName"><span jhiTranslate="barlevelserviceApp.productVariousPositions.product">Product</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let productVariousPositions of productVariousPositions ;trackBy: trackId">
-                <td><a [routerLink]="['/product-various-positions', productVariousPositions.id, 'view' ]">{{productVariousPositions.id}}</a></td>
-                <td>{{productVariousPositions.xAxis}}</td>
-                <td>{{productVariousPositions.yAxis}}</td>
-                <td>{{productVariousPositions.order}}</td>
-                <td>
-                    <div *ngIf="productVariousPositions.productId">
-                        <a [routerLink]="['../product', productVariousPositions.productId , 'view' ]" >{{productVariousPositions.productName}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button type="submit"
-                                [routerLink]="['/product-various-positions', productVariousPositions.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/product-various-positions', productVariousPositions.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', 'product-various-positions', { outlets: { popup: productVariousPositions.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let productVariousPositions of productVariousPositions ;trackBy: trackId">
+                    <td><a [routerLink]="['/product-various-positions', productVariousPositions.id, 'view']">{{ productVariousPositions.id }}</a></td>
+                    <td>{{ productVariousPositions.xAxis }}</td>
+                    <td>{{ productVariousPositions.yAxis }}</td>
+                    <td>{{ productVariousPositions.order }}</td>
+                    <td>
+                        <div *ngIf="productVariousPositions.productId">
+                            <a [routerLink]="['/product', productVariousPositions.productId , 'view']" >{{ productVariousPositions.productName }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/product-various-positions', productVariousPositions.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/product-various-positions', productVariousPositions.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(productVariousPositions)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
-    <div *ngIf="productVariousPositions && productVariousPositions.length">
+
+    <div *ngIf="productVariousPositions?.length > 0">
         <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
+
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>

@@ -8,17 +8,15 @@ import { IZone } from 'app/shared/model/zone.model';
   templateUrl: './zone-detail.component.html'
 })
 export class ZoneDetailComponent implements OnInit {
-  zone: IZone;
+  zone: IZone | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ zone }) => {
-      this.zone = zone;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ zone }) => (this.zone = zone));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }

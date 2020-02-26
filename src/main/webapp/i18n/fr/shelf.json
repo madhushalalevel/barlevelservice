@@ -1,10 +1,11 @@
 {
-  "barLevelServiceApp": {
+  "barlevelserviceApp": {
     "shelf": {
       "home": {
         "title": "Shelves",
         "createLabel": "Créer un nouveau Shelf",
-        "createOrEditLabel": "Créer ou éditer un Shelf"
+        "createOrEditLabel": "Créer ou éditer un Shelf",
+        "notFound": "Aucun Shelf trouvé"
       },
       "created": "Un nouveau Shelf a été créé avec l'identifiant {{ param }}",
       "updated": "Le Shelf avec l'identifiant {{ param }} a été mis à jour",
@@ -15,12 +16,11 @@
       "detail": {
         "title": "Shelf"
       },
-      "shelfID": "Shelf ID",
       "name": "Name",
       "discription": "Discription",
       "tenantId": "Tenant Id",
-      "zone": "Zone",
-      "inventory": "Inventory"
+      "inventory": "Inventory",
+      "zone": "Zone"
     }
   }
 }

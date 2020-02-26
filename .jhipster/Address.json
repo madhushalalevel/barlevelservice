@@ -42,15 +42,14 @@
             "ownerSide": false
         }
     ],
-    "changelogDate": "20200225134425",
+    "changelogDate": "20200226050300",
     "entityTableName": "address",
     "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
+    "readOnly": false,
     "clientRootFolder": "",
-    "applications": [
-        "barLevelService"
-    ]
+    "applications": "*"
 }

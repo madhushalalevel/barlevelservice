@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-import { BarLevelServiceTestModule } from '../../../test.module';
-import { UserMgmtDetailComponent } from 'app/admin/user-management/user-management-detail.component';
-import { User } from 'app/core';
+import { BarlevelserviceTestModule } from '../../../test.module';
+import { UserManagementDetailComponent } from 'app/admin/user-management/user-management-detail.component';
+import { User } from 'app/core/user/user.model';
 
 describe('Component Tests', () => {
   describe('User Management Detail Component', () => {
-    let comp: UserMgmtDetailComponent;
-    let fixture: ComponentFixture<UserMgmtDetailComponent>;
-    const route = ({
-      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', ['ROLE_USER'], 'admin', null, null, null) })
+    let comp: UserManagementDetailComponent;
+    let fixture: ComponentFixture<UserManagementDetailComponent>;
+    const route: ActivatedRoute = ({
+      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', ['ROLE_USER'], 'admin') })
     } as any) as ActivatedRoute;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [BarLevelServiceTestModule],
-        declarations: [UserMgmtDetailComponent],
+        imports: [BarlevelserviceTestModule],
+        declarations: [UserManagementDetailComponent],
         providers: [
           {
             provide: ActivatedRoute,
@@ -25,12 +25,12 @@ describe('Component Tests', () => {
           }
         ]
       })
-        .overrideTemplate(UserMgmtDetailComponent, '')
+        .overrideTemplate(UserManagementDetailComponent, '')
         .compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(UserMgmtDetailComponent);
+      fixture = TestBed.createComponent(UserManagementDetailComponent);
       comp = fixture.componentInstance;
     });
 
@@ -52,11 +52,7 @@ describe('Component Tests', () => {
             activated: true,
             langKey: 'en',
             authorities: ['ROLE_USER'],
-            createdBy: 'admin',
-            createdDate: null,
-            lastModifiedBy: null,
-            lastModifiedDate: null,
-            password: null
+            createdBy: 'admin'
           })
         );
       });
